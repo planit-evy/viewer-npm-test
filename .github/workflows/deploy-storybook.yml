@@ -18,6 +18,12 @@ jobs:
         with:
           node-version: '20.11.1'
 
+      - name: Email
+        run: git config --global user.email "EvheniyY@planit-inc.com"
+
+      - name: Name
+        run: git config --global user.name "Evheniy"
+
       - name: Install dependencies
         run: npm ci
 
