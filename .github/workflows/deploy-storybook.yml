@@ -3,7 +3,7 @@ name: Deploy Storybook to GitHub Pages
 on:
   push:
     branches:
-      - main  # or your default branch
+      - test-deploy-gh-page
 
 jobs:
   deploy:
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.11.1'  # use your node version
+          node-version: '20.11.1'
 
       - name: Install dependencies
         run: npm ci
