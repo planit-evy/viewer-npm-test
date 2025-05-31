@@ -24,5 +24,10 @@ jobs:
       - name: Build Storybook
         run: npm run build-storybook
 
+      - name: Configure Git user for gh-pages
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
       - name: Deploy Storybook
         run: npm run deploy-storybook
