@@ -22,7 +22,7 @@ jobs:
         run: git config --global user.email "EvheniyY@planit-inc.com"
 
       - name: Name
-        run: git config --global user.name "Evheniy"
+        run: git config --global user.name "planit-evy"
 
       - name: Install dependencies
         run: npm ci
