@@ -42,7 +42,7 @@ export const AutodeskViewer: React.FC<Props> = ({ urn, accessToken, viewableId }
 
     return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />;
 };
-
+//test
 // Load viewer from local files
 async function loadForgeViewer() {
     if ((window as any).Autodesk) return;
