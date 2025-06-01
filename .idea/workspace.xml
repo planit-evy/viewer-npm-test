@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="upd yml" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="test-deploy-gh-page" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "planit-evy"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/planit-evy/viewer-npm-test.git",
+    "accountId": "6cd96db3-a504-4f39-8451-f09c72a12e4b"
+  }
+}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2xrcYNjd5eXJJMpR92dWv9YbJCJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showScratchesAndConsoles" value="false" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "main",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-WS-251.25410.117" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="" />
+      <created>1748699680542</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1748699680542</updated>
+      <workItem from="1748699681680" duration="12670000" />
+    </task>
+    <task id="LOCAL-00001" summary="add gitignore">
+      <option name="closed" value="true" />
+      <created>1748703049374</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1748703049374</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add simple viewer wrapper to storybook">
+      <option name="closed" value="true" />
+      <created>1748706241631</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1748706241631</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix">
+      <option name="closed" value="true" />
+      <created>1748706679472</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1748706679472</updated>
+    </task>
+    <task id="LOCAL-00004" summary="viewer wrap">
+      <option name="closed" value="true" />
+      <created>1748706992807</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1748706992807</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add gh-job">
+      <option name="closed" value="true" />
+      <created>1748707498428</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1748707498428</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add gh-job">
+      <option name="closed" value="true" />
+      <created>1748707720605</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1748707720605</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add commit">
+      <option name="closed" value="true" />
+      <created>1748708107901</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1748708107901</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add git config on run">
+      <option name="closed" value="true" />
+      <created>1748708346941</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1748708346941</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add git config on run">
+      <option name="closed" value="true" />
+      <created>1748708749581</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1748708749581</updated>
+    </task>
+    <task id="LOCAL-00010" summary="remove git config on run">
+      <option name="closed" value="true" />
+      <created>1748708814950</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1748708814950</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add bot">
+      <option name="closed" value="true" />
+      <created>1748709058732</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1748709058732</updated>
+    </task>
+    <task id="LOCAL-00012" summary="add token">
+      <option name="closed" value="true" />
+      <created>1748709425372</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1748709425372</updated>
+    </task>
+    <task id="LOCAL-00013" summary="upd script">
+      <option name="closed" value="true" />
+      <created>1748710116433</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1748710116433</updated>
+    </task>
+    <task id="LOCAL-00014" summary="upd yml">
+      <option name="closed" value="true" />
+      <created>1748710841737</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1748710841737</updated>
+    </task>
+    <task id="LOCAL-00015" summary="upd yml">
+      <option name="closed" value="true" />
+      <created>1748711124632</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1748711124632</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add gitignore" />
+    <MESSAGE value="add simple viewer wrapper to storybook" />
+    <MESSAGE value="fix" />
+    <MESSAGE value="viewer wrap" />
+    <MESSAGE value="add gh-job" />
+    <MESSAGE value="add commit" />
+    <MESSAGE value="add git config on run" />
+    <MESSAGE value="remove git config on run" />
+    <MESSAGE value="add bot" />
+    <MESSAGE value="add token" />
+    <MESSAGE value="upd script" />
+    <MESSAGE value="upd yml" />
+    <option name="LAST_COMMIT_MESSAGE" value="upd yml" />
+  </component>
+</project>
