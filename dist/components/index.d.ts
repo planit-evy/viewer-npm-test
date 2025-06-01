@@ -1,1 +1,0 @@
-export { AutodeskViewer } from './AutodeskViewer';
