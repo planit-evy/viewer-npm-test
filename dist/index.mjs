@@ -1,35 +1,10 @@
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// src/index.ts
-var index_exports = {};
-__export(index_exports, {
-  default: () => index_default
-});
-module.exports = __toCommonJS(index_exports);
-
 // src/components/AutodeskViewer/AutodeskViewer.tsx
-var import_react = require("react");
-var import_jsx_runtime = require("react/jsx-runtime");
+import { useEffect, useRef } from "react";
+import { jsx } from "react/jsx-runtime";
 var AutodeskViewer = ({ urn, accessToken, viewableId }) => {
-  const containerRef = (0, import_react.useRef)(null);
+  const containerRef = useRef(null);
   if (typeof window === "undefined") return null;
-  (0, import_react.useEffect)(() => {
+  useEffect(() => {
     if (typeof window === "undefined") return;
     let viewer;
     async function loadViewer() {
@@ -51,7 +26,7 @@ var AutodeskViewer = ({ urn, accessToken, viewableId }) => {
     loadViewer().then((r) => console.log("viewer loaded", r));
     return () => viewer == null ? void 0 : viewer.finish();
   }, [urn, accessToken]);
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
+  return /* @__PURE__ */ jsx("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
 };
 async function loadForgeViewer() {
   if (window.Autodesk) return;
@@ -69,3 +44,6 @@ async function loadForgeViewer() {
 
 // src/index.ts
 var index_default = AutodeskViewer;
+export {
+  index_default as default
+};
