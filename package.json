@@ -35,8 +35,10 @@
   "devDependencies": {
     "@storybook/addon-onboarding": "^9.0.2",
     "@storybook/react-vite": "^9.0.2",
+    "@types/forge-viewer": "^7.99.1",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
+    "@types/three": "^0.179.0",
     "gh-pages": "^6.3.0",
     "storybook": "^9.0.2",
     "tsup": "^8.5.0",

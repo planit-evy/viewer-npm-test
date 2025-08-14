@@ -8,7 +8,14 @@
     "jsx": "react-jsx",
     "moduleResolution": "Node",
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": [
+      "forge-viewer",
+      "three"
+    ]
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "src/global.d.ts"
+  ]
 }
