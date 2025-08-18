@@ -34,9 +34,8 @@ var getAggregateSelection = (viewer, guids, guidsAndModels, isolate) => {
     return;
   }
   viewer.setAggregateSelection();
-  isolate && viewer.setAggregateIsolation();
   viewer.setAggregateSelection(aggregatedDbIds);
-  isolate && viewer.setAggregateIsolation(aggregatedDbIds);
+  isolate && viewer.setAggregateIsolation(viewer.getAggregateSelection());
 };
 
 // src/components/AutodeskViewer/AutodeskViewer.tsx
