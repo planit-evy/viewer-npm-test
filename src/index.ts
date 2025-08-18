@@ -1,3 +1,5 @@
 import { AutodeskViewer } from './components';
 import { getAggregateSelection } from './heplers';
-export default { AutodeskViewer, getAggregateSelection };
+
+export { AutodeskViewer } from './components/AutodeskViewer';
+export { getAggregateSelection } from './heplers';
