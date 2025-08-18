@@ -156,7 +156,7 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       });
     }
 
-    loadViewer().then(() => console.log('viewer loaded'));
+    !viewer && loadViewer().then(() => console.log('viewer loaded'));
 
     return () => {
       viewer?.finish();

@@ -61,9 +61,9 @@ var getAggregateSelection = (viewer, guids, guidsAndModels, isolate) => {
     return;
   }
   viewer.setAggregateSelection();
-  console.log("aggregatedDbIds", aggregatedDbIds);
+  isolate && viewer.setAggregateIsolation();
   viewer.setAggregateSelection(aggregatedDbIds);
-  viewer.setAggregateIsolation(aggregatedDbIds);
+  isolate && viewer.setAggregateIsolation(aggregatedDbIds);
 };
 
 // src/components/AutodeskViewer/AutodeskViewer.tsx
@@ -167,7 +167,7 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
         viewer.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
       });
     }
-    loadViewer().then(() => console.log("viewer loaded"));
+    !viewer && loadViewer().then(() => console.log("viewer loaded"));
     return () => {
       viewer == null ? void 0 : viewer.finish();
       clearCallback && clearCallback();
