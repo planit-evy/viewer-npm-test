@@ -47,12 +47,12 @@ export const getAggregateSelection = (
     return;
   }
 
-  viewer.setAggregateSelection([]);
-  // @ts-ignore
-  isolate && viewer.setAggregateIsolation([]);
+  //@ts-ignore
+  viewer.setAggregateSelection();
+  //@ts-ignore
+  isolate && viewer.setAggregateIsolation();
 
   viewer.setAggregateSelection(aggregatedDbIds);
-  // @ts-ignore
+  //@ts-ignore
   isolate && viewer.setAggregateIsolation(aggregatedDbIds);
-  isolate && viewer.fitToView();
 };
