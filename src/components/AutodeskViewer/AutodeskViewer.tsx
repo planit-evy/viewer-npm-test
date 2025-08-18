@@ -175,12 +175,12 @@ async function loadForgeViewer() {
 
   const script = document.createElement('script');
   // script.src = '/viewer3D.min.js';
-  script.src = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js';
+  script.src = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/viewer3D.min.js';
   document.head.appendChild(script);
 
   const link = document.createElement('link');
   // link.href = '/style.min.css';
-  link.href = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css';
+  link.href = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/style.min.css';
   link.rel = 'stylesheet';
   document.head.appendChild(link);
 
