@@ -1,9 +1,103 @@
 // src/components/AutodeskViewer/AutodeskViewer.tsx
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
+
+// src/heplers/viewerHelpers.ts
+var getGlobalOffset = async (doc, viewerInst, node) => {
+  var _a;
+  const bubbleNode = node ? node : doc.getRoot().getDefaultGeometry();
+  await doc.downloadAecModelData();
+  const aecModelData = bubbleNode.getAecModelData();
+  const tf = aecModelData && aecModelData.refPointTransformation;
+  let globalOffset = (_a = viewerInst.model) == null ? void 0 : _a.getData().globalOffset;
+  const refPoint = tf ? new THREE.Vector3(tf[9], tf[10], tf[11]) : new THREE.Vector3(0, 0, 0);
+  const MaxDistSqr = 4e6;
+  const distSqr = globalOffset && THREE.Vector3.prototype.distanceToSquared.call(refPoint, globalOffset);
+  if (!globalOffset || distSqr > MaxDistSqr) {
+    globalOffset = new THREE.Vector3().copy(refPoint);
+  }
+  return globalOffset;
+};
+var getAggregateSelection = (viewer, guids, guidsAndModels, isolate) => {
+  const aggregatedDbIds = [];
+  const allFragIds = [];
+  guidsAndModels.forEach(({ model, guidsToDbids }) => {
+    const dbIds = guids.map((guid) => guidsToDbids[guid]).filter((el) => el);
+    if (!dbIds.length) return;
+    aggregatedDbIds.push({ model, ids: dbIds });
+    dbIds == null ? void 0 : dbIds.forEach((id) => {
+      model.getInstanceTree().enumNodeFragments(id, (fragId) => {
+        allFragIds.push(fragId);
+      });
+    });
+  });
+  if (!allFragIds.length) {
+    return;
+  }
+  !isolate && viewer.setAggregateSelection([]);
+  isolate && viewer.setAggregateIsolation([]);
+  !isolate && viewer.setAggregateSelection(aggregatedDbIds);
+  isolate && viewer.setAggregateIsolation(aggregatedDbIds);
+};
+
+// src/components/AutodeskViewer/AutodeskViewer.tsx
 import { jsx } from "react/jsx-runtime";
-var AutodeskViewer = ({ urn, accessToken, viewableId }) => {
+var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem, mappingCallback, clearCallback }) => {
   const containerRef = useRef(null);
   if (typeof window === "undefined") return null;
+  const getAllLeafComponents = (viewer, callback) => {
+    let cbCount = 0;
+    const components = [];
+    let tree = viewer.model.getData().instanceTree;
+    function getLeafComponentsRec(parent) {
+      cbCount++;
+      if (tree.getChildCount(parent) != 0) {
+        tree.enumNodeChildren(
+          parent,
+          function(children) {
+            getLeafComponentsRec(children);
+          },
+          false
+        );
+      } else {
+        components.push(parent);
+      }
+      if (--cbCount == 0) callback(components);
+    }
+    viewer.getObjectTree(function(objectTree) {
+      tree = objectTree;
+      getLeafComponentsRec(tree.getRootId());
+    });
+  };
+  const onGeometryLoaded = useCallback((e) => {
+    console.log("Geometry loaded", e);
+  }, []);
+  const onModelAdded = useCallback((e) => {
+    console.log("Model added", e);
+  }, []);
+  const onInstTreeCreated = useCallback(async (e) => {
+    getAllLeafComponents(e.target, function(dbIds) {
+      console.log("Found " + dbIds.length + " leaf nodes");
+      e.target.model.getBulkProperties2(
+        dbIds,
+        { propFilter: ["externalId"], categoryFilter: void 0, ignoreHidden: true, needExternalId: true },
+        (arg) => {
+          const dict = {};
+          arg.forEach((el) => {
+            if (el.externalId) {
+              dict[el.externalId] = el.dbId;
+            }
+          });
+          console.log("Found leaf dbids processed");
+          const modelMapping = { model: e.model, guidsToDbids: dict };
+          console.log({ model: e.model, guidsToDbids: dict });
+          mappingCallback && mappingCallback(modelMapping);
+        },
+        (err) => {
+          console.log("Mapping GUID to DBID error", err);
+        }
+      );
+    });
+  }, []);
   useEffect(() => {
     if (typeof window === "undefined") return;
     let viewer;
@@ -16,15 +110,41 @@ var AutodeskViewer = ({ urn, accessToken, viewableId }) => {
       Autodesk.Viewing.Initializer(options, () => {
         viewer = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
         viewer.start();
-        const documentId = `urn:${urn}`;
-        Autodesk.Viewing.Document.load(documentId, (doc) => {
-          const defaultModel = doc.getRoot().getDefaultGeometry();
-          viewer.loadDocumentNode(doc, defaultModel);
-        });
+        const urns = Array.isArray(urn) ? urn : [urn];
+        const loadModelFromUrn = async (urn2, isFirst) => {
+          const documentId = `urn:${urn2}`;
+          Autodesk.Viewing.Document.load(
+            documentId,
+            async (doc) => {
+              const root = doc.getRoot();
+              const selectedView = root.findByGuid(viewableId);
+              const defaultView = root.getNamedViews().find((v) => v.data.name === "Default View");
+              const newConstructionView = root.getNamedViews().find((v) => v.data.name === "New Construction");
+              const defaultModel = root.getDefaultGeometry();
+              const viewable = selectedView || defaultView || newConstructionView || defaultModel;
+              const globalOffset = await getGlobalOffset(doc, viewer, viewable);
+              await viewer.loadDocumentNode(doc, viewable, {
+                applyRefPoint: useSharedCoordinateSystem,
+                keepCurrentModels: !isFirst,
+                globalOffset: useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 }
+              });
+            },
+            (errCode, msg) => {
+              console.error(`Failed to load document ${urn2}`, errCode, msg);
+            }
+          );
+        };
+        urns.forEach((u, idx) => loadModelFromUrn(u, idx === 0));
+        viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
+        viewer.addEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
+        viewer.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
       });
     }
-    loadViewer().then((r) => console.log("viewer loaded", r));
-    return () => viewer == null ? void 0 : viewer.finish();
+    loadViewer().then(() => console.log("viewer loaded"));
+    return () => {
+      viewer == null ? void 0 : viewer.finish();
+      clearCallback && clearCallback();
+    };
   }, [urn, accessToken]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
 };
@@ -43,7 +163,7 @@ async function loadForgeViewer() {
 }
 
 // src/index.ts
-var index_default = AutodeskViewer;
+var index_default = { AutodeskViewer, getAggregateSelection };
 export {
   index_default as default
 };
