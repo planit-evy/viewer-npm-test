@@ -51,8 +51,8 @@ export const getAggregateSelection = (
   viewer.setAggregateSelection();
   //@ts-ignore
   // isolate && viewer.setAggregateIsolation();
-
+  console.log('aggregatedDbIds', aggregatedDbIds);
   viewer.setAggregateSelection(aggregatedDbIds);
   //@ts-ignore
-  isolate && viewer.setAggregateIsolation(viewer.getAggregateSelection());
+  viewer.setAggregateIsolation(aggregatedDbIds);
 };
