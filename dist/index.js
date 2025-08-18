@@ -19,7 +19,9 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var index_exports = {};
 __export(index_exports, {
-  default: () => index_default
+  AutodeskViewer: () => AutodeskViewer,
+  default: () => index_default,
+  getAggregateSelection: () => getAggregateSelection
 });
 module.exports = __toCommonJS(index_exports);
 
@@ -188,4 +190,12 @@ async function loadForgeViewer() {
 }
 
 // src/index.ts
-var index_default = { AutodeskViewer, getAggregateSelection };
+var index_default = {
+  AutodeskViewer,
+  getAggregateSelection
+};
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  AutodeskViewer,
+  getAggregateSelection
+});

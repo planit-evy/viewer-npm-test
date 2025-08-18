@@ -163,7 +163,12 @@ async function loadForgeViewer() {
 }
 
 // src/index.ts
-var index_default = { AutodeskViewer, getAggregateSelection };
+var index_default = {
+  AutodeskViewer,
+  getAggregateSelection
+};
 export {
-  index_default as default
+  AutodeskViewer,
+  index_default as default,
+  getAggregateSelection
 };
