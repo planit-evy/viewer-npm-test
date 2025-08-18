@@ -113,7 +113,7 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       };
 
       Autodesk.Viewing.Initializer(options, () => {
-        if (viewer) return;
+        if (viewer.running) return;
         viewer = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
         viewer.start();
 
@@ -160,7 +160,13 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
     loadViewer().then(() => console.log('viewer loaded'));
 
     return () => {
+      viewer?.tearDown();
       viewer?.finish();
+
+      //clear all event listeners
+      viewer.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
+      viewer.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
+      viewer.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
 
       //clear all data
       clearCallback && clearCallback();
