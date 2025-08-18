@@ -113,6 +113,7 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       };
 
       Autodesk.Viewing.Initializer(options, () => {
+        if (viewer) return;
         viewer = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
         viewer.start();
 
@@ -156,7 +157,7 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       });
     }
 
-    !viewer && loadViewer().then(() => console.log('viewer loaded'));
+    loadViewer().then(() => console.log('viewer loaded'));
 
     return () => {
       viewer?.finish();

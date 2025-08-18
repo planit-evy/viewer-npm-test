@@ -135,6 +135,7 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
         accessToken
       };
       Autodesk.Viewing.Initializer(options, () => {
+        if (viewer) return;
         viewer = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
         viewer.start();
         const urns = Array.isArray(urn) ? urn : [urn];
@@ -167,7 +168,7 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
         viewer.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
       });
     }
-    !viewer && loadViewer().then(() => console.log("viewer loaded"));
+    loadViewer().then(() => console.log("viewer loaded"));
     return () => {
       viewer == null ? void 0 : viewer.finish();
       clearCallback && clearCallback();
