@@ -3,11 +3,34 @@ import { getGlobalOffset } from '../../heplers/viewerHelpers';
 import ViewerEventArgs = Autodesk.Viewing.ViewerEventArgs;
 
 type Props = {
+  /**
+   * The URN of the model to load in Autodesk Viewer.
+   * Example: `dXJuOmFkc2subW9kZWw6...` or [`dXJuOmFkc2subW9kZWw6...`, `dXJuOmFkc2subW9kZWw6...`, etc]
+   */
   urn: string | string[];
+  /**
+   * The access token to use for authentication. Should be retrieved from your server.
+   */
   accessToken: string;
+  /**
+   * The ID of the viewable to load. If you don't provide this, the default viewable will be loaded'
+   * View priority: selectedView > Default View > New Construction > Default Geometry(means Viewer method)
+   */
   viewableId?: string;
+  /**
+   * Whether to use a shared coordinate system for the model.
+   * Default: false
+   */
   useSharedCoordinateSystem?: boolean;
+  /**
+   * Callback function to handle the mapping of GUIDs to DBIDs.
+   * @param modelMapping - An object containing the model and its GUID-to-DBID mapping.
+   */
   mappingCallback?: (arg: any) => void;
+  /**
+   * Callback function to clear any cached data or state.
+   * Here I mean to clear all data that a user gets from any callback from viewer.
+   */
   clearCallback?: () => void;
 };
 

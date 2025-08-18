@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="build a new package" />
+    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="build update">
+      <change beforePath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -91,6 +94,7 @@
       <workItem from="1748778786088" duration="613000" />
       <workItem from="1755157760803" duration="3580000" />
       <workItem from="1755518782615" duration="759000" />
+      <workItem from="1755520309637" duration="2759000" />
     </task>
     <task id="LOCAL-00001" summary="add gitignore">
       <option name="closed" value="true" />
@@ -268,7 +272,31 @@
       <option name="project" value="LOCAL" />
       <updated>1755518929877</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="fix re-export to named">
+      <option name="closed" value="true" />
+      <created>1755520564845</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1755520564845</updated>
+    </task>
+    <task id="LOCAL-00024" summary="re-export update">
+      <option name="closed" value="true" />
+      <created>1755521006153</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1755521006153</updated>
+    </task>
+    <task id="LOCAL-00025" summary="build update">
+      <option name="closed" value="true" />
+      <created>1755521051073</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1755521051073</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -305,6 +333,9 @@
     <MESSAGE value="upd" />
     <MESSAGE value="add functions to viewer" />
     <MESSAGE value="build a new package" />
-    <option name="LAST_COMMIT_MESSAGE" value="build a new package" />
+    <MESSAGE value="fix re-export to named" />
+    <MESSAGE value="re-export update" />
+    <MESSAGE value="build update" />
+    <option name="LAST_COMMIT_MESSAGE" value="build update" />
   </component>
 </project>
