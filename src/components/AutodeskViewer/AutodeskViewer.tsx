@@ -1,82 +1,167 @@
-import React, { useEffect, useRef } from 'react';
-import {getGlobalOffset} from "../../heplers/viewerHelpers";
-
-declare const Autodesk: any;
+import { useCallback, useEffect, useRef, FC } from 'react';
+import { getGlobalOffset } from '../../heplers/viewerHelpers';
+import ViewerEventArgs = Autodesk.Viewing.ViewerEventArgs;
 
 type Props = {
-    urn: string;
-    accessToken: string;
-    viewableId?: string;
-    useSharedCoordinateSystem?: boolean;
+  urn: string | string[];
+  accessToken: string;
+  viewableId?: string;
+  useSharedCoordinateSystem?: boolean;
+  mappingCallback?: (arg: any) => void;
+  clearCallback?: () => void;
 };
 
-export const AutodeskViewer: React.FC<Props> = ({ urn, accessToken, viewableId, useSharedCoordinateSystem }) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    if (typeof window === 'undefined') return null;
-    useEffect(() => {
-        if (typeof window === 'undefined') return
-        let viewer: any;
+export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSharedCoordinateSystem, mappingCallback, clearCallback }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-        async function loadViewer() {
-            await loadForgeViewer();
+  if (typeof window === 'undefined') return null;
 
-            const options = {
-                env: 'AutodeskProduction',
-                accessToken,
-            };
+  const getAllLeafComponents = (viewer: Autodesk.Viewing.Viewer3D, callback: (arg: number[]) => void) => {
+    let cbCount = 0; // count pending callbacks
+    const components: number[] = []; // store the results
+    let tree = viewer.model.getData().instanceTree as Autodesk.Viewing.InstanceTree; // the instance tree
 
-            Autodesk.Viewing.Initializer(options, () => {
-                viewer = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
-                viewer.start();
+    function getLeafComponentsRec(parent: number) {
+      cbCount++;
+      if (tree.getChildCount(parent) != 0) {
+        tree.enumNodeChildren(
+          parent,
+          function (children) {
+            getLeafComponentsRec(children);
+          },
+          false,
+        );
+      } else {
+        components.push(parent);
+      }
+      if (--cbCount == 0) callback(components);
+    }
+    viewer.getObjectTree(function (objectTree) {
+      tree = objectTree;
+      getLeafComponentsRec(tree.getRootId());
+    });
+  };
 
-                const documentId = `urn:${urn}`;
-                Autodesk.Viewing.Document.load(documentId, async (doc: any) => {
+  const onGeometryLoaded = useCallback((e: ViewerEventArgs) => {
+    console.log('Geometry loaded', e);
+  }, []);
 
-                    const defaultView = doc
-                        .getRoot()
-                        .getNamedViews()
-                        .find((view: any) => view.data.name === 'Default View');
-                    const newConstructionView = doc
-                        .getRoot()
-                        .getNamedViews()
-                        .find((view: any) => view.data.name === 'New Construction');
-                    const defaultModel = doc.getRoot().getDefaultGeometry();
+  const onModelAdded = useCallback((e: ViewerEventArgs) => {
+    console.log('Model added', e);
+  }, []);
 
-                    const globalOffset = await getGlobalOffset(doc, viewer, defaultView || newConstructionView || defaultModel);
+  const onInstTreeCreated = useCallback(async (e: ViewerEventArgs) => {
+    getAllLeafComponents(e.target, function (dbIds: number[]) {
+      console.log('Found ' + dbIds.length + ' leaf nodes');
 
-                    await viewer.loadDocumentNode(doc, defaultView || newConstructionView || defaultModel, {
-                        applyRefPoint: useSharedCoordinateSystem,
-                        keepCurrentModels: true,
-                        globalOffset: useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 },
-                    } );
-                });
-            });
-        }
+      e.target.model.getBulkProperties2(
+        dbIds,
+        { propFilter: ['externalId'], categoryFilter: undefined, ignoreHidden: true, needExternalId: true },
+        arg => {
+          const dict: { [key: string]: number } = {};
+          arg.forEach(el => {
+            if (el.externalId) {
+              dict[el.externalId] = el.dbId;
+            }
+          });
+          console.log('Found leaf dbids processed');
+          const modelMapping = { model: e.model, guidsToDbids: dict };
+          console.log({ model: e.model, guidsToDbids: dict });
+          //in mapping callback needs to handle save previous state due to model load queue
+          mappingCallback && mappingCallback(modelMapping);
+        },
+        err => {
+          console.log('Mapping GUID to DBID error', err);
+        },
+      );
+    });
+  }, []);
 
-        loadViewer().then(r => console.log('viewer loaded', r));
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    let viewer: any;
 
-        return () => viewer?.finish();
-    }, [urn, accessToken]);
+    async function loadViewer() {
+      await loadForgeViewer();
 
-    return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />;
+      const options = {
+        env: 'AutodeskProduction',
+        accessToken,
+      };
+
+      Autodesk.Viewing.Initializer(options, () => {
+        viewer = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
+        viewer.start();
+
+        const urns = Array.isArray(urn) ? urn : [urn]; // support single or multiple
+
+        const loadModelFromUrn = async (urn: string, isFirst: boolean) => {
+          const documentId = `urn:${urn}`;
+          Autodesk.Viewing.Document.load(
+            documentId,
+            async (doc: any) => {
+              const root = doc.getRoot();
+              const selectedView = root.findByGuid(viewableId);
+              const defaultView = root.getNamedViews().find((v: any) => v.data.name === 'Default View');
+              const newConstructionView = root.getNamedViews().find((v: any) => v.data.name === 'New Construction');
+              const defaultModel = root.getDefaultGeometry();
+
+              // Pick priority: selectedView > Default View > New Construction > Default Geometry
+              const viewable = selectedView || defaultView || newConstructionView || defaultModel;
+
+              const globalOffset = await getGlobalOffset(doc, viewer, viewable);
+
+              await viewer.loadDocumentNode(doc, viewable, {
+                applyRefPoint: useSharedCoordinateSystem,
+                keepCurrentModels: !isFirst,
+                globalOffset: useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 },
+              });
+            },
+            (errCode: any, msg: any) => {
+              console.error(`Failed to load document ${urn}`, errCode, msg);
+            },
+          );
+        };
+
+        // Load all models in sequence
+        urns.forEach((u, idx) => loadModelFromUrn(u, idx === 0));
+
+        // Events
+        viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
+        viewer.addEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
+        viewer.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
+      });
+    }
+
+    loadViewer().then(() => console.log('viewer loaded'));
+
+    return () => {
+      viewer?.finish();
+
+      //clear all data
+      clearCallback && clearCallback();
+    };
+  }, [urn, accessToken]);
+
+  return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />;
 };
 
 // Load viewer from local files
 async function loadForgeViewer() {
-    if ((window as any).Autodesk) return;
+  if ((window as any).Autodesk) return;
 
-    const script = document.createElement('script');
-    // script.src = '/viewer3D.min.js';
-    script.src = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js';
-    document.head.appendChild(script);
+  const script = document.createElement('script');
+  // script.src = '/viewer3D.min.js';
+  script.src = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js';
+  document.head.appendChild(script);
 
-    const link = document.createElement('link');
-    // link.href = '/style.min.css';
-    link.href = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
+  const link = document.createElement('link');
+  // link.href = '/style.min.css';
+  link.href = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css';
+  link.rel = 'stylesheet';
+  document.head.appendChild(link);
 
-    await new Promise((resolve) => {
-        script.onload = resolve;
-    });
+  await new Promise(resolve => {
+    script.onload = resolve;
+  });
 }
