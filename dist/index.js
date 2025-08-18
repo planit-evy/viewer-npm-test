@@ -60,10 +60,11 @@ var getAggregateSelection = (viewer, guids, guidsAndModels, isolate) => {
   if (!allFragIds.length) {
     return;
   }
-  !isolate && viewer.setAggregateSelection([]);
+  viewer.setAggregateSelection([]);
   isolate && viewer.setAggregateIsolation([]);
-  !isolate && viewer.setAggregateSelection(aggregatedDbIds);
+  viewer.setAggregateSelection(aggregatedDbIds);
   isolate && viewer.setAggregateIsolation(aggregatedDbIds);
+  isolate && viewer.fitToView();
 };
 
 // src/components/AutodeskViewer/AutodeskViewer.tsx
