@@ -135,7 +135,6 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
         accessToken
       };
       Autodesk.Viewing.Initializer(options, () => {
-        if (viewer == null ? void 0 : viewer.running) return;
         viewer = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
         viewer.start();
         const urns = Array.isArray(urn) ? urn : [urn];
@@ -168,9 +167,10 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
         viewer.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
       });
     }
-    loadViewer().then(() => console.log("viewer loaded"));
+    if (!viewer && containerRef.current) {
+      loadViewer().then(() => console.log("viewer loaded"));
+    }
     return () => {
-      if (!viewer) return;
       viewer == null ? void 0 : viewer.tearDown();
       viewer == null ? void 0 : viewer.finish();
       viewer == null ? void 0 : viewer.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
@@ -178,7 +178,7 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
       viewer == null ? void 0 : viewer.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
       clearCallback && clearCallback();
     };
-  }, [urn, accessToken]);
+  }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
   return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
 };
 async function loadForgeViewer() {

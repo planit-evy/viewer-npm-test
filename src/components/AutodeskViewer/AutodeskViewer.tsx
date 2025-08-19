@@ -113,7 +113,6 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       };
 
       Autodesk.Viewing.Initializer(options, () => {
-        if (viewer?.running) return;
         viewer = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
         viewer.start();
 
@@ -157,10 +156,12 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       });
     }
 
-    loadViewer().then(() => console.log('viewer loaded'));
+    if (!viewer && containerRef.current) {
+      loadViewer().then(() => console.log('viewer loaded'));
+    }
 
     return () => {
-      if (!viewer) return;
+      // if (!viewer || !viewer?.container) return;
       viewer?.tearDown();
       viewer?.finish();
 
@@ -172,7 +173,7 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       //clear all data
       clearCallback && clearCallback();
     };
-  }, [urn, accessToken]);
+  }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
 
   return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />;
 };
