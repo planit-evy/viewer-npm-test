@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="try to run use effect only once 3">
-      <change beforePath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stories/AutodeskViewer.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/AutodeskViewer.stories.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="save" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,6 +24,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -94,7 +92,7 @@
       <workItem from="1748778786088" duration="613000" />
       <workItem from="1755157760803" duration="3580000" />
       <workItem from="1755518782615" duration="759000" />
-      <workItem from="1755520309637" duration="14777000" />
+      <workItem from="1755520309637" duration="19027000" />
     </task>
     <task id="LOCAL-00001" summary="add gitignore">
       <option name="closed" value="true" />
@@ -416,7 +414,31 @@
       <option name="project" value="LOCAL" />
       <updated>1755608504224</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="try to run use effect only once 4">
+      <option name="closed" value="true" />
+      <created>1755611494420</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1755611494420</updated>
+    </task>
+    <task id="LOCAL-00042" summary="try to run use effect only once 5">
+      <option name="closed" value="true" />
+      <created>1755612114060</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1755612114060</updated>
+    </task>
+    <task id="LOCAL-00043" summary="try to run use effect only once 6">
+      <option name="closed" value="true" />
+      <created>1755614543729</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1755614543729</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -427,16 +449,25 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="remove git config on run" />
-    <MESSAGE value="add bot" />
-    <MESSAGE value="add token" />
     <MESSAGE value="upd script" />
     <MESSAGE value="upd yml" />
     <MESSAGE value="add build" />
@@ -459,6 +490,9 @@
     <MESSAGE value="try to run use effect only once" />
     <MESSAGE value="try to run use effect only once 2" />
     <MESSAGE value="try to run use effect only once 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="try to run use effect only once 3" />
+    <MESSAGE value="try to run use effect only once 4" />
+    <MESSAGE value="try to run use effect only once 5" />
+    <MESSAGE value="try to run use effect only once 6" />
+    <option name="LAST_COMMIT_MESSAGE" value="try to run use effect only once 6" />
   </component>
 </project>
