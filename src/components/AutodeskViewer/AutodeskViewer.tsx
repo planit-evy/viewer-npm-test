@@ -182,15 +182,23 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
 
 // Load viewer from local files
 async function loadForgeViewer() {
-  if ((window as any).Autodesk) return;
+  // If already loaded, just return
+  if ((window as any).Autodesk?.Viewing) return;
+
+  if (document.getElementById('forge-viewer-script')) {
+    // script already injected but maybe not finished loading
+    await new Promise(resolve => {
+      (document.getElementById('forge-viewer-script') as HTMLScriptElement).onload = resolve;
+    });
+    return;
+  }
 
   const script = document.createElement('script');
-  // script.src = '/viewer3D.min.js';
+  script.id = 'forge-viewer-script';
   script.src = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/viewer3D.min.js';
   document.head.appendChild(script);
 
   const link = document.createElement('link');
-  // link.href = '/style.min.css';
   link.href = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/style.min.css';
   link.rel = 'stylesheet';
   document.head.appendChild(link);

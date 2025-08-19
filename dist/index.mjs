@@ -161,8 +161,16 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
   return /* @__PURE__ */ jsx("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
 };
 async function loadForgeViewer() {
-  if (window.Autodesk) return;
+  var _a;
+  if ((_a = window.Autodesk) == null ? void 0 : _a.Viewing) return;
+  if (document.getElementById("forge-viewer-script")) {
+    await new Promise((resolve) => {
+      document.getElementById("forge-viewer-script").onload = resolve;
+    });
+    return;
+  }
   const script = document.createElement("script");
+  script.id = "forge-viewer-script";
   script.src = "https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/viewer3D.min.js";
   document.head.appendChild(script);
   const link = document.createElement("link");
