@@ -1,5 +1,22 @@
+var __defProp = Object.defineProperty;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+
 // src/components/AutodeskViewer/AutodeskViewer.tsx
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // src/heplers/viewerHelpers.ts
 var getGlobalOffset = async (doc, viewerInst, node) => {
@@ -41,14 +58,53 @@ var getAggregateSelection = (viewer, guids, guidsAndModels, isolate) => {
 
 // src/components/AutodeskViewer/AutodeskViewer.tsx
 import { jsx } from "react/jsx-runtime";
-var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem, mappingCallback, clearCallback }) => {
+var runtime = {
+  options: {},
+  ready: null
+};
+async function initializeViewerRuntime(options) {
+  if (!runtime.ready) {
+    const script = document.createElement("script");
+    script.src = "https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/viewer3D.min.js";
+    document.head.appendChild(script);
+    const link = document.createElement("link");
+    link.href = "https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/style.min.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+    await new Promise((resolve) => {
+      script.onload = resolve;
+    });
+    runtime.options = __spreadValues({}, options);
+    runtime.ready = new Promise((resolve) => Autodesk.Viewing.Initializer(runtime.options, resolve));
+  } else {
+    if (
+      // ['accessToken', 'getAccessToken', 'env', 'api', 'language']
+      // Remove access token from the array because refresh from back returns every time a new token, and it leads to reject here
+      ["getAccessToken", "env", "api", "language"].some((prop) => {
+        return options[prop] !== runtime.options[prop];
+      })
+    ) {
+      return Promise.reject("Cannot initialize another viewer runtime with different settings.");
+    }
+  }
+  return runtime.ready;
+}
+var AutodeskViewer = ({
+  urn,
+  runtime: runtime2,
+  viewableId,
+  useSharedCoordinateSystem,
+  mappingCallback,
+  clearCallback,
+  theme
+}) => {
   const containerRef = useRef(null);
-  const viewerRef = useRef(null);
+  const [viewer, setViewer] = useState(null);
   if (typeof window === "undefined") return null;
-  const getAllLeafComponents = (viewer, callback) => {
+  const getAllLeafComponents = (viewer2, callback) => {
     let cbCount = 0;
     const components = [];
-    let tree = viewer.model.getData().instanceTree;
+    let tree = viewer2.model.getData().instanceTree;
     function getLeafComponentsRec(parent) {
       cbCount++;
       if (tree.getChildCount(parent) != 0) {
@@ -64,11 +120,38 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
       }
       if (--cbCount == 0) callback(components);
     }
-    viewer.getObjectTree(function(objectTree) {
+    viewer2.getObjectTree(function(objectTree) {
       tree = objectTree;
       getLeafComponentsRec(tree.getRootId());
     });
   };
+  const updateViewerState = useCallback(() => {
+    if (!viewer || !(viewer == null ? void 0 : viewer.container)) return;
+    const urns = Array.isArray(urn) ? urn : [urn];
+    urns.forEach(
+      (urn2, idx) => Autodesk.Viewing.Document.load(
+        "urn:" + urn2,
+        async (doc) => {
+          await doc.downloadAecModelData();
+          const root = doc.getRoot();
+          const selectedView = root.findByGuid(viewableId);
+          const defaultView = root.getNamedViews().find((v) => v.data.name === "Default View");
+          const newConstructionView = root.getNamedViews().find((v) => v.data.name === "New Construction");
+          const defaultModel = root.getDefaultGeometry();
+          const viewable = selectedView || defaultView || newConstructionView || defaultModel;
+          const globalOffset = await getGlobalOffset(doc, viewer, viewable);
+          await viewer.loadDocumentNode(doc, viewable, {
+            applyRefPoint: useSharedCoordinateSystem,
+            keepCurrentModels: idx !== 0,
+            globalOffset: useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 }
+          });
+        },
+        (code, message, errors) => {
+          console.error(code, message, errors);
+        }
+      )
+    );
+  }, [urn, viewableId, useSharedCoordinateSystem, viewer]);
   const onGeometryLoaded = useCallback((e) => {
     console.log("Geometry loaded", e);
   }, []);
@@ -100,79 +183,36 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
     });
   }, []);
   useEffect(() => {
-    var _a;
-    async function loadViewer() {
-      if (window == null ? void 0 : window.NOP_VIEWER) {
-        viewerRef.current = window.NOP_VIEWER;
-      }
-      console.log("ref", viewerRef.current);
-      await loadForgeViewer();
-      const options = {
-        env: "AutodeskProduction",
-        accessToken
-      };
-      Autodesk.Viewing.Initializer(options, () => {
-        viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
-        viewerRef.current.start();
-        const urns = Array.isArray(urn) ? urn : [urn];
-        const loadModelFromUrn = async (urn2, isFirst) => {
-          const documentId = `urn:${urn2}`;
-          Autodesk.Viewing.Document.load(
-            documentId,
-            async (doc) => {
-              const root = doc.getRoot();
-              const selectedView = root.findByGuid(viewableId);
-              const defaultView = root.getNamedViews().find((v) => v.data.name === "Default View");
-              const newConstructionView = root.getNamedViews().find((v) => v.data.name === "New Construction");
-              const defaultModel = root.getDefaultGeometry();
-              const viewable = selectedView || defaultView || newConstructionView || defaultModel;
-              const globalOffset = await getGlobalOffset(doc, viewerRef.current, viewable);
-              await viewerRef.current.loadDocumentNode(doc, viewable, {
-                applyRefPoint: useSharedCoordinateSystem,
-                keepCurrentModels: !isFirst,
-                globalOffset: useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 }
-              });
-            },
-            (errCode, msg) => {
-              console.error(`Failed to load document ${urn2}`, errCode, msg);
-            }
-          );
-        };
-        urns.forEach((u, idx) => loadModelFromUrn(u, idx === 0));
-        viewerRef.current.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
-        viewerRef.current.addEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
-        viewerRef.current.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
+    if (viewer) return;
+    if (!containerRef.current) return;
+    initializeViewerRuntime(runtime2 || {}).then(() => {
+      const viewerInstance = containerRef.current && new Autodesk.Viewing.GuiViewer3D(containerRef.current, {
+        theme: theme === "dark" ? "dark-theme" : "light-theme"
       });
-    }
-    if (!(window == null ? void 0 : window.NOP_VIEWER) || !((_a = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _a.container)) {
-      loadViewer().then(() => console.log("viewer loaded"));
-    }
+      setViewer(viewerInstance);
+    }).catch((err) => {
+      console.error("viewer initialize error", err);
+    });
+  }, [viewer, containerRef]);
+  useEffect(() => {
+    if (!viewer || !(viewer == null ? void 0 : viewer.container)) return;
+    viewer.start();
+    viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
+    viewer.addEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
+    viewer.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
+    updateViewerState();
     return () => {
-      var _a2, _b, _c, _d, _e;
-      (_a2 = viewerRef.current) == null ? void 0 : _a2.tearDown();
-      (_b = viewerRef.current) == null ? void 0 : _b.finish();
-      (_c = viewerRef.current) == null ? void 0 : _c.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
-      (_d = viewerRef.current) == null ? void 0 : _d.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
-      (_e = viewerRef.current) == null ? void 0 : _e.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
-      viewerRef.current = null;
       clearCallback && clearCallback();
+      if (!viewer || !(viewer == null ? void 0 : viewer.container)) return;
+      viewer.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
+      viewer.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
+      viewer.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
+      viewer.tearDown();
+      viewer.finish();
     };
-  }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
+  }, [viewer, onGeometryLoaded, onModelAdded, onInstTreeCreated, updateViewerState]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
 };
-async function loadForgeViewer() {
-  if (window.Autodesk) return;
-  const script = document.createElement("script");
-  script.src = "https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/viewer3D.min.js";
-  document.head.appendChild(script);
-  const link = document.createElement("link");
-  link.href = "https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/style.min.css";
-  link.rel = "stylesheet";
-  document.head.appendChild(link);
-  await new Promise((resolve) => {
-    script.onload = resolve;
-  });
-}
 
 // src/index.ts
 var index_default = {
