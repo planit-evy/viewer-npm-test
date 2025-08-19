@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { AutodeskViewer } from '../components';
+import { StrictMode } from 'react';
 
 const meta: Meta<typeof AutodeskViewer> = {
   title: 'Components/AutodeskViewer',
@@ -7,6 +8,13 @@ const meta: Meta<typeof AutodeskViewer> = {
   parameters: {
     layout: 'fullscreen',
   },
+  decorators: [
+    Story => (
+      <StrictMode>
+        <Story />
+      </StrictMode>
+    ),
+  ],
 };
 export default meta;
 

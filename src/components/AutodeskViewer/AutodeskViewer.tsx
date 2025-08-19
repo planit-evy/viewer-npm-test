@@ -5,7 +5,7 @@ import ViewerEventArgs = Autodesk.Viewing.ViewerEventArgs;
 type Props = {
   /**
    * The URN of the model to load in Autodesk Viewer.
-   * Example: `dXJuOmFkc2subW9kZWw6...` or [`dXJuOmFkc2subW9kZWw6...`, `dXJuOmFkc2subW9kZWw6...`, etc]
+   * Example: `dXJuOmFkc2subW9kZWw6...` or [`dXJuOmFkc2subW9kZWw6...`, `dXJuOmFkc2subW9kZWw6...`, etc.]
    */
   urn: string | string[];
   /**
@@ -14,7 +14,7 @@ type Props = {
   accessToken: string;
   /**
    * The ID of the viewable to load. If you don't provide this, the default viewable will be loaded'
-   * View priority: selectedView > Default View > New Construction > Default Geometry(means Viewer method)
+   * View priority: selectedView > Default View > New Construction > Default Geometry (means Viewer method)
    */
   viewableId?: string;
   /**
@@ -113,13 +113,6 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       };
 
       Autodesk.Viewing.Initializer(options, () => {
-        if (viewerRef.current || window?.NOP_VIEWER) {
-          viewerRef.current?.tearDown();
-          viewerRef.current?.finish();
-          window?.NOP_VIEWER?.tearDown();
-          window?.NOP_VIEWER?.finish();
-          viewerRef.current = null;
-        }
         viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
         viewerRef.current.start();
 
@@ -163,7 +156,7 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       });
     }
 
-    if (!viewerRef.current && containerRef.current) {
+    if (!window?.NOP_VIEWER || !window?.NOP_VIEWER?.container) {
       loadViewer().then(() => console.log('viewer loaded'));
     }
 

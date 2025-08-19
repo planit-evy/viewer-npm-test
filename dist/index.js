@@ -127,6 +127,7 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
     });
   }, []);
   (0, import_react.useEffect)(() => {
+    var _a;
     async function loadViewer() {
       if (viewerRef.current) return;
       console.log("ref", viewerRef.current);
@@ -136,14 +137,6 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
         accessToken
       };
       Autodesk.Viewing.Initializer(options, () => {
-        var _a, _b, _c, _d;
-        if (viewerRef.current || (window == null ? void 0 : window.NOP_VIEWER)) {
-          (_a = viewerRef.current) == null ? void 0 : _a.tearDown();
-          (_b = viewerRef.current) == null ? void 0 : _b.finish();
-          (_c = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _c.tearDown();
-          (_d = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _d.finish();
-          viewerRef.current = null;
-        }
         viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
         viewerRef.current.start();
         const urns = Array.isArray(urn) ? urn : [urn];
@@ -176,12 +169,12 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
         viewerRef.current.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
       });
     }
-    if (!viewerRef.current && containerRef.current) {
+    if (!(window == null ? void 0 : window.NOP_VIEWER) || !((_a = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _a.container)) {
       loadViewer().then(() => console.log("viewer loaded"));
     }
     return () => {
-      var _a, _b, _c, _d, _e;
-      (_a = viewerRef.current) == null ? void 0 : _a.tearDown();
+      var _a2, _b, _c, _d, _e;
+      (_a2 = viewerRef.current) == null ? void 0 : _a2.tearDown();
       (_b = viewerRef.current) == null ? void 0 : _b.finish();
       (_c = viewerRef.current) == null ? void 0 : _c.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
       (_d = viewerRef.current) == null ? void 0 : _d.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);

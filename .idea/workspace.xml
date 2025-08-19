@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="try to run use effect only once">
+    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="try to run use effect only once 3">
       <change beforePath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/stories/AutodeskViewer.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/AutodeskViewer.stories.tsx" afterDir="false" />
     </list>
@@ -94,7 +94,7 @@
       <workItem from="1748778786088" duration="613000" />
       <workItem from="1755157760803" duration="3580000" />
       <workItem from="1755518782615" duration="759000" />
-      <workItem from="1755520309637" duration="12711000" />
+      <workItem from="1755520309637" duration="14777000" />
     </task>
     <task id="LOCAL-00001" summary="add gitignore">
       <option name="closed" value="true" />
@@ -400,7 +400,23 @@
       <option name="project" value="LOCAL" />
       <updated>1755606293254</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="try to run use effect only once 2">
+      <option name="closed" value="true" />
+      <created>1755608075883</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1755608075883</updated>
+    </task>
+    <task id="LOCAL-00040" summary="try to run use effect only once 3">
+      <option name="closed" value="true" />
+      <created>1755608504224</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1755608504224</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -418,8 +434,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add commit" />
-    <MESSAGE value="add git config on run" />
     <MESSAGE value="remove git config on run" />
     <MESSAGE value="add bot" />
     <MESSAGE value="add token" />
@@ -443,6 +457,8 @@
     <MESSAGE value="update build and viewer" />
     <MESSAGE value="update build and viewer add viewer ref" />
     <MESSAGE value="try to run use effect only once" />
-    <option name="LAST_COMMIT_MESSAGE" value="try to run use effect only once" />
+    <MESSAGE value="try to run use effect only once 2" />
+    <MESSAGE value="try to run use effect only once 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="try to run use effect only once 3" />
   </component>
 </project>
