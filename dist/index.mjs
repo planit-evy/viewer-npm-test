@@ -108,6 +108,9 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
           accessToken
         };
         Autodesk.Viewing.Initializer(options, () => {
+          var _a, _b;
+          (_a = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _a.finish();
+          (_b = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _b.tearDown();
           viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
           viewerRef.current.start();
           const urns = Array.isArray(urn) ? urn : [urn];

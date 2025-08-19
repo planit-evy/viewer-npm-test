@@ -112,6 +112,9 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
         };
 
         Autodesk.Viewing.Initializer(options, () => {
+          window?.NOP_VIEWER?.finish();
+          window?.NOP_VIEWER?.tearDown();
+
           viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
           viewerRef.current.start();
 
