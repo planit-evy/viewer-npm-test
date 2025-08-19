@@ -136,6 +136,14 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
         accessToken
       };
       Autodesk.Viewing.Initializer(options, () => {
+        var _a, _b, _c, _d;
+        if (viewerRef.current || (window == null ? void 0 : window.NOP_VIEWER)) {
+          (_a = viewerRef.current) == null ? void 0 : _a.tearDown();
+          (_b = viewerRef.current) == null ? void 0 : _b.finish();
+          (_c = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _c.tearDown();
+          (_d = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _d.finish();
+          viewerRef.current = null;
+        }
         viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
         viewerRef.current.start();
         const urns = Array.isArray(urn) ? urn : [urn];
@@ -178,6 +186,7 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
       (_c = viewerRef.current) == null ? void 0 : _c.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
       (_d = viewerRef.current) == null ? void 0 : _d.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
       (_e = viewerRef.current) == null ? void 0 : _e.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
+      viewerRef.current = null;
       clearCallback && clearCallback();
     };
   }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);

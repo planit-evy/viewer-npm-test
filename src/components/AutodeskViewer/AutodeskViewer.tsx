@@ -113,6 +113,13 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       };
 
       Autodesk.Viewing.Initializer(options, () => {
+        if (viewerRef.current || window?.NOP_VIEWER) {
+          viewerRef.current?.tearDown();
+          viewerRef.current?.finish();
+          window?.NOP_VIEWER?.tearDown();
+          window?.NOP_VIEWER?.finish();
+          viewerRef.current = null;
+        }
         viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
         viewerRef.current.start();
 
@@ -169,6 +176,7 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       viewerRef.current?.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
       viewerRef.current?.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
 
+      viewerRef.current = null;
       //clear all data
       clearCallback && clearCallback();
     };
