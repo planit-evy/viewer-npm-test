@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="build update">
+    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="update build and viewer">
+      <change beforePath="$PROJECT_DIR$/dist/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.mjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +95,7 @@
       <workItem from="1748778786088" duration="613000" />
       <workItem from="1755157760803" duration="3580000" />
       <workItem from="1755518782615" duration="759000" />
-      <workItem from="1755520309637" duration="2759000" />
+      <workItem from="1755520309637" duration="8715000" />
     </task>
     <task id="LOCAL-00001" summary="add gitignore">
       <option name="closed" value="true" />
@@ -296,7 +297,79 @@
       <option name="project" value="LOCAL" />
       <updated>1755521051073</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="update aggregate selection foo">
+      <option name="closed" value="true" />
+      <created>1755527977961</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1755527977961</updated>
+    </task>
+    <task id="LOCAL-00027" summary="update build">
+      <option name="closed" value="true" />
+      <created>1755527996996</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1755527996996</updated>
+    </task>
+    <task id="LOCAL-00028" summary="update build and foo">
+      <option name="closed" value="true" />
+      <created>1755528683977</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1755528683977</updated>
+    </task>
+    <task id="LOCAL-00029" summary="update build and foo">
+      <option name="closed" value="true" />
+      <created>1755529066310</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1755529066310</updated>
+    </task>
+    <task id="LOCAL-00030" summary="update build and viewer version">
+      <option name="closed" value="true" />
+      <created>1755529252965</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1755529252965</updated>
+    </task>
+    <task id="LOCAL-00031" summary="update build and foo">
+      <option name="closed" value="true" />
+      <created>1755529746524</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1755529746524</updated>
+    </task>
+    <task id="LOCAL-00032" summary="update build and foo and viewer">
+      <option name="closed" value="true" />
+      <created>1755529981462</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1755529981462</updated>
+    </task>
+    <task id="LOCAL-00033" summary="update build and viewer">
+      <option name="closed" value="true" />
+      <created>1755530477379</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1755530477379</updated>
+    </task>
+    <task id="LOCAL-00034" summary="update build and viewer">
+      <option name="closed" value="true" />
+      <created>1755531122442</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1755531122442</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,9 +387,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add gitignore" />
-    <MESSAGE value="add simple viewer wrapper to storybook" />
-    <MESSAGE value="fix" />
     <MESSAGE value="viewer wrap" />
     <MESSAGE value="add gh-job" />
     <MESSAGE value="add commit" />
@@ -336,6 +406,12 @@
     <MESSAGE value="fix re-export to named" />
     <MESSAGE value="re-export update" />
     <MESSAGE value="build update" />
-    <option name="LAST_COMMIT_MESSAGE" value="build update" />
+    <MESSAGE value="update aggregate selection foo" />
+    <MESSAGE value="update build" />
+    <MESSAGE value="update build and viewer version" />
+    <MESSAGE value="update build and foo" />
+    <MESSAGE value="update build and foo and viewer" />
+    <MESSAGE value="update build and viewer" />
+    <option name="LAST_COMMIT_MESSAGE" value="update build and viewer" />
   </component>
 </project>
