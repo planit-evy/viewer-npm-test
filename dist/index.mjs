@@ -147,15 +147,13 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
     }
     return () => {
       var _a, _b, _c, _d, _e;
-      if (viewerRef.current) {
-        (_a = viewerRef.current) == null ? void 0 : _a.tearDown();
-        (_b = viewerRef.current) == null ? void 0 : _b.finish();
-        (_c = viewerRef.current) == null ? void 0 : _c.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
-        (_d = viewerRef.current) == null ? void 0 : _d.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
-        (_e = viewerRef.current) == null ? void 0 : _e.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
-        viewerRef.current = null;
-        clearCallback && clearCallback();
-      }
+      (_a = viewerRef.current) == null ? void 0 : _a.tearDown();
+      (_b = viewerRef.current) == null ? void 0 : _b.finish();
+      (_c = viewerRef.current) == null ? void 0 : _c.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
+      (_d = viewerRef.current) == null ? void 0 : _d.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
+      (_e = viewerRef.current) == null ? void 0 : _e.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
+      viewerRef.current = null;
+      clearCallback && clearCallback();
     };
   }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, style: { width: "100%", height: "100%" } });

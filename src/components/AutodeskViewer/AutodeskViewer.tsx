@@ -161,19 +161,17 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       loadViewer().then(() => console.log('VIEWER LOADED', viewerRef.current, window?.NOP_VIEWERS));
     }
     return () => {
-      if (viewerRef.current) {
-        viewerRef.current?.tearDown();
-        viewerRef.current?.finish();
+      viewerRef.current?.tearDown();
+      viewerRef.current?.finish();
 
-        //clear all event listeners
-        viewerRef.current?.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
-        viewerRef.current?.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
-        viewerRef.current?.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
+      //clear all event listeners
+      viewerRef.current?.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
+      viewerRef.current?.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
+      viewerRef.current?.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
 
-        viewerRef.current = null;
-        //clear all data
-        clearCallback && clearCallback();
-      }
+      viewerRef.current = null;
+      //clear all data
+      clearCallback && clearCallback();
     };
   }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
 
