@@ -100,9 +100,9 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
     });
   }, []);
   useEffect(() => {
-    if (typeof window === "undefined") return;
     async function loadViewer() {
       if (viewerRef.current) return;
+      console.log("ref", viewerRef.current);
       await loadForgeViewer();
       const options = {
         env: "AutodeskProduction",
