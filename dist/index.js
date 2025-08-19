@@ -127,62 +127,59 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
     });
   }, []);
   (0, import_react.useEffect)(() => {
-    var _a;
-    async function loadViewer() {
-      if (window == null ? void 0 : window.NOP_VIEWER) {
-        viewerRef.current = window.NOP_VIEWER;
-      }
-      console.log("ref", viewerRef.current);
-      await loadForgeViewer();
-      const options = {
-        env: "AutodeskProduction",
-        accessToken
-      };
-      Autodesk.Viewing.Initializer(options, () => {
-        viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
-        viewerRef.current.start();
-        const urns = Array.isArray(urn) ? urn : [urn];
-        const loadModelFromUrn = async (urn2, isFirst) => {
-          const documentId = `urn:${urn2}`;
-          Autodesk.Viewing.Document.load(
-            documentId,
-            async (doc) => {
-              const root = doc.getRoot();
-              const selectedView = root.findByGuid(viewableId);
-              const defaultView = root.getNamedViews().find((v) => v.data.name === "Default View");
-              const newConstructionView = root.getNamedViews().find((v) => v.data.name === "New Construction");
-              const defaultModel = root.getDefaultGeometry();
-              const viewable = selectedView || defaultView || newConstructionView || defaultModel;
-              const globalOffset = await getGlobalOffset(doc, viewerRef.current, viewable);
-              await viewerRef.current.loadDocumentNode(doc, viewable, {
-                applyRefPoint: useSharedCoordinateSystem,
-                keepCurrentModels: !isFirst,
-                globalOffset: useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 }
-              });
-            },
-            (errCode, msg) => {
-              console.error(`Failed to load document ${urn2}`, errCode, msg);
-            }
-          );
+    if (!viewerRef.current) {
+      async function loadViewer() {
+        await loadForgeViewer();
+        const options = {
+          env: "AutodeskProduction",
+          accessToken
         };
-        urns.forEach((u, idx) => loadModelFromUrn(u, idx === 0));
-        viewerRef.current.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
-        viewerRef.current.addEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
-        viewerRef.current.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
-      });
-    }
-    if (!(window == null ? void 0 : window.NOP_VIEWER) || !((_a = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _a.container)) {
-      loadViewer().then(() => console.log("viewer loaded"));
+        Autodesk.Viewing.Initializer(options, () => {
+          viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
+          viewerRef.current.start();
+          const urns = Array.isArray(urn) ? urn : [urn];
+          const loadModelFromUrn = async (urn2, isFirst) => {
+            const documentId = `urn:${urn2}`;
+            Autodesk.Viewing.Document.load(
+              documentId,
+              async (doc) => {
+                const root = doc.getRoot();
+                const selectedView = root.findByGuid(viewableId);
+                const defaultView = root.getNamedViews().find((v) => v.data.name === "Default View");
+                const newConstructionView = root.getNamedViews().find((v) => v.data.name === "New Construction");
+                const defaultModel = root.getDefaultGeometry();
+                const viewable = selectedView || defaultView || newConstructionView || defaultModel;
+                const globalOffset = await getGlobalOffset(doc, viewerRef.current, viewable);
+                await viewerRef.current.loadDocumentNode(doc, viewable, {
+                  applyRefPoint: useSharedCoordinateSystem,
+                  keepCurrentModels: !isFirst,
+                  globalOffset: useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 }
+                });
+              },
+              (errCode, msg) => {
+                console.error(`Failed to load document ${urn2}`, errCode, msg);
+              }
+            );
+          };
+          urns.forEach((u, idx) => loadModelFromUrn(u, idx === 0));
+          viewerRef.current.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
+          viewerRef.current.addEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
+          viewerRef.current.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
+        });
+      }
+      loadViewer().then(() => console.log("VIEWER LOADED", viewerRef.current, window == null ? void 0 : window.NOP_VIEWERS));
     }
     return () => {
-      var _a2, _b, _c, _d, _e;
-      (_a2 = viewerRef.current) == null ? void 0 : _a2.tearDown();
-      (_b = viewerRef.current) == null ? void 0 : _b.finish();
-      (_c = viewerRef.current) == null ? void 0 : _c.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
-      (_d = viewerRef.current) == null ? void 0 : _d.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
-      (_e = viewerRef.current) == null ? void 0 : _e.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
-      viewerRef.current = null;
-      clearCallback && clearCallback();
+      var _a, _b, _c, _d, _e;
+      if (viewerRef.current) {
+        (_a = viewerRef.current) == null ? void 0 : _a.tearDown();
+        (_b = viewerRef.current) == null ? void 0 : _b.finish();
+        (_c = viewerRef.current) == null ? void 0 : _c.removeEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, onGeometryLoaded);
+        (_d = viewerRef.current) == null ? void 0 : _d.removeEventListener(Autodesk.Viewing.MODEL_ADDED_EVENT, onModelAdded);
+        (_e = viewerRef.current) == null ? void 0 : _e.removeEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, onInstTreeCreated);
+        viewerRef.current = null;
+        clearCallback && clearCallback();
+      }
     };
   }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
   return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
