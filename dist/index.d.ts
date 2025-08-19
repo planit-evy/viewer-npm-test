@@ -8,16 +8,9 @@ type Props = {
      */
     urn: string | string[];
     /**
-     * Runtime configuration for Autodesk Viewer.
-     * accessToken: string;
-     *  env: string;
-     *  api: string;
+     * The access token to use for authentication. Should be retrieved from your server.
      */
-    runtime: {
-        accessToken: string;
-        env: string;
-        api: string;
-    };
+    accessToken: string;
     /**
      * The ID of the viewable to load. If you don't provide this, the default viewable will be loaded'
      * View priority: selectedView > Default View > New Construction > Default Geometry (means Viewer method)
@@ -38,10 +31,6 @@ type Props = {
      * Here I mean to clear all data that a user gets from any callback from viewer.
      */
     clearCallback?: () => void;
-    /**
-     * The theme of the viewer.
-     */
-    theme?: 'light' | 'dark';
 };
 declare const AutodeskViewer: FC<Props>;
 
@@ -55,16 +44,11 @@ declare const getAggregateSelection: (viewer: Autodesk.Viewing.GuiViewer3D, guid
 declare const _default: {
     AutodeskViewer: react.FC<{
         urn: string | string[];
-        runtime: {
-            accessToken: string;
-            env: string;
-            api: string;
-        };
+        accessToken: string;
         viewableId?: string;
         useSharedCoordinateSystem?: boolean;
         mappingCallback?: (arg: any) => void;
         clearCallback?: () => void;
-        theme?: "light" | "dark";
     }>;
     getAggregateSelection: (viewer: Autodesk.Viewing.GuiViewer3D, guids: string[], guidsAndModels: {
         model: Autodesk.Viewing.Model;

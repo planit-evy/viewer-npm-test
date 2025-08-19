@@ -26,10 +26,6 @@ export const Default: Story = {
       'dXJuOmFkc2sud2lwcHJvZDpmcy5maWxlOnZmLnRMT20wUTMxUmVpcWRXS3lsWUVfcHc_dmVyc2lvbj0yMA',
       'dXJuOmFkc2sud2lwcHJvZDpmcy5maWxlOnZmLnVQb1lPaGZZVDJtRjRJcHVvS0xwTkE_dmVyc2lvbj0y',
     ],
-    runtime: {
-      accessToken: '',
-      env: 'AutodeskProduction2',
-      api: 'streamingV2',
-    },
+    accessToken: '',
   },
 };
