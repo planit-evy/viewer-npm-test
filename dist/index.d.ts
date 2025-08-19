@@ -4,7 +4,7 @@ import { FC } from 'react';
 type Props = {
     /**
      * The URN of the model to load in Autodesk Viewer.
-     * Example: `dXJuOmFkc2subW9kZWw6...` or [`dXJuOmFkc2subW9kZWw6...`, `dXJuOmFkc2subW9kZWw6...`, etc]
+     * Example: `dXJuOmFkc2subW9kZWw6...` or [`dXJuOmFkc2subW9kZWw6...`, `dXJuOmFkc2subW9kZWw6...`, etc.]
      */
     urn: string | string[];
     /**
@@ -13,7 +13,7 @@ type Props = {
     accessToken: string;
     /**
      * The ID of the viewable to load. If you don't provide this, the default viewable will be loaded'
-     * View priority: selectedView > Default View > New Construction > Default Geometry(means Viewer method)
+     * View priority: selectedView > Default View > New Construction > Default Geometry (means Viewer method)
      */
     viewableId?: string;
     /**

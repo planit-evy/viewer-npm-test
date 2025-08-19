@@ -103,7 +103,9 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
 
   useEffect(() => {
     async function loadViewer() {
-      if (viewerRef.current) return;
+      if (window?.NOP_VIEWER) {
+        viewerRef.current = window.NOP_VIEWER;
+      }
       console.log('ref', viewerRef.current);
       await loadForgeViewer();
 

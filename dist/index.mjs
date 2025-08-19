@@ -102,7 +102,9 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
   useEffect(() => {
     var _a;
     async function loadViewer() {
-      if (viewerRef.current) return;
+      if (window == null ? void 0 : window.NOP_VIEWER) {
+        viewerRef.current = window.NOP_VIEWER;
+      }
       console.log("ref", viewerRef.current);
       await loadForgeViewer();
       const options = {
