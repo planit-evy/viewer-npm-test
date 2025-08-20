@@ -55,6 +55,11 @@ export const getAggregateSelection = (
   viewer.setAggregateSelection(aggregatedDbIds);
   //@ts-ignore
   isolate && viewer.setAggregateIsolation(aggregatedDbIds);
-  //@ts-ignore
-  zoom && viewer.fitToView(aggregatedDbIds);
+  zoom &&
+    viewer.fitToView(
+      //@ts-ignore
+      aggregatedDbIds.map(el => {
+        return { model: el.model, selection: el.ids };
+      }),
+    );
 };
