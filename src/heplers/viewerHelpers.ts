@@ -26,6 +26,7 @@ export const getAggregateSelection = (
   guids: string[],
   guidsAndModels: { model: Autodesk.Viewing.Model; guidsToDbids: { [key: string]: number } }[],
   isolate?: boolean,
+  zoom?: boolean,
 ) => {
   const aggregatedDbIds: { model: any; ids: number[] }[] = [];
 
@@ -54,4 +55,6 @@ export const getAggregateSelection = (
   viewer.setAggregateSelection(aggregatedDbIds);
   //@ts-ignore
   isolate && viewer.setAggregateIsolation(aggregatedDbIds);
+  //@ts-ignore
+  zoom && viewer.fitToView(aggregatedDbIds);
 };

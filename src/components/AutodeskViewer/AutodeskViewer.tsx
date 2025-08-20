@@ -32,9 +32,34 @@ type Props = {
    * Here I mean to clear all data that a user gets from any callback from viewer.
    */
   clearCallback?: () => void;
+  /**
+   * The environment to use for Autodesk Viewer.
+   * Default: 'AutodeskProduction2'
+   */
+  viewerEnv?: 'AutodeskProduction' | 'AutodeskProduction2';
+  /**
+   * The API to use for Autodesk Viewer.
+   * Default: 'derivativeV2'
+   */
+  viewerApi?: 'streamingV2' | 'derivativeV2';
+  /**
+   * The theme to use for Autodesk Viewer.
+   * Default: 'light-theme'
+   */
+  theme?: 'light-theme' | 'dark-theme';
 };
 
-export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSharedCoordinateSystem, mappingCallback, clearCallback }) => {
+export const AutodeskViewer: FC<Props> = ({
+  urn,
+  accessToken,
+  viewableId,
+  useSharedCoordinateSystem,
+  mappingCallback,
+  clearCallback,
+  viewerEnv = 'AutodeskProduction2',
+  viewerApi = 'derivativeV2',
+  theme = 'light-theme',
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<any>(null);
 
@@ -107,15 +132,21 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
         await loadForgeViewer();
 
         const options = {
-          env: 'AutodeskProduction',
+          env: viewerEnv,
+          api: viewerApi,
           accessToken,
+        };
+
+        const viewerOptions = {
+          extensions: ['Autodesk.DocumentBrowser'],
+          theme: theme,
         };
 
         Autodesk.Viewing.Initializer(options, () => {
           window?.NOP_VIEWER?.finish();
           window?.NOP_VIEWER?.tearDown();
 
-          viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
+          viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current, viewerOptions);
           viewerRef.current.start();
 
           const urns = Array.isArray(urn) ? urn : [urn]; // support single or multiple
@@ -174,6 +205,22 @@ export const AutodeskViewer: FC<Props> = ({ urn, accessToken, viewableId, useSha
       clearCallback && clearCallback();
     };
   }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver(entries => {
+      for (const _entry of entries) {
+        window?.NOP_VIEWER && window.NOP_VIEWER.resize();
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />;
 };
