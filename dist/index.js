@@ -44,7 +44,7 @@ var getGlobalOffset = async (doc, viewerInst, node) => {
   }
   return globalOffset;
 };
-var getAggregateSelection = (viewer, guids, guidsAndModels, isolate) => {
+var getAggregateSelection = (viewer, guids, guidsAndModels, isolate, zoom) => {
   const aggregatedDbIds = [];
   const allFragIds = [];
   guidsAndModels.forEach(({ model, guidsToDbids }) => {
@@ -64,11 +64,22 @@ var getAggregateSelection = (viewer, guids, guidsAndModels, isolate) => {
   isolate && viewer.setAggregateIsolation();
   viewer.setAggregateSelection(aggregatedDbIds);
   isolate && viewer.setAggregateIsolation(aggregatedDbIds);
+  zoom && viewer.fitToView(aggregatedDbIds);
 };
 
 // src/components/AutodeskViewer/AutodeskViewer.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
-var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem, mappingCallback, clearCallback }) => {
+var AutodeskViewer = ({
+  urn,
+  accessToken,
+  viewableId,
+  useSharedCoordinateSystem,
+  mappingCallback,
+  clearCallback,
+  viewerEnv = "AutodeskProduction2",
+  viewerApi = "derivativeV2",
+  theme = "light-theme"
+}) => {
   const containerRef = (0, import_react.useRef)(null);
   const viewerRef = (0, import_react.useRef)(null);
   if (typeof window === "undefined") return null;
@@ -131,14 +142,19 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
       async function loadViewer() {
         await loadForgeViewer();
         const options = {
-          env: "AutodeskProduction",
+          env: viewerEnv,
+          api: viewerApi,
           accessToken
+        };
+        const viewerOptions = {
+          extensions: ["Autodesk.DocumentBrowser"],
+          theme
         };
         Autodesk.Viewing.Initializer(options, () => {
           var _a, _b;
           (_a = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _a.finish();
           (_b = window == null ? void 0 : window.NOP_VIEWER) == null ? void 0 : _b.tearDown();
-          viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current);
+          viewerRef.current = new Autodesk.Viewing.GuiViewer3D(containerRef.current, viewerOptions);
           viewerRef.current.start();
           const urns = Array.isArray(urn) ? urn : [urn];
           const loadModelFromUrn = async (urn2, isFirst) => {
@@ -183,6 +199,18 @@ var AutodeskViewer = ({ urn, accessToken, viewableId, useSharedCoordinateSystem,
       clearCallback && clearCallback();
     };
   }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
+  (0, import_react.useEffect)(() => {
+    if (!containerRef.current) return;
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const _entry of entries) {
+        (window == null ? void 0 : window.NOP_VIEWER) && window.NOP_VIEWER.resize();
+      }
+    });
+    resizeObserver.observe(containerRef.current);
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
   return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
 };
 async function loadForgeViewer() {

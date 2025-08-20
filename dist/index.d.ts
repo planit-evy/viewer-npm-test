@@ -31,6 +31,21 @@ type Props = {
      * Here I mean to clear all data that a user gets from any callback from viewer.
      */
     clearCallback?: () => void;
+    /**
+     * The environment to use for Autodesk Viewer.
+     * Default: 'AutodeskProduction2'
+     */
+    viewerEnv?: 'AutodeskProduction' | 'AutodeskProduction2';
+    /**
+     * The API to use for Autodesk Viewer.
+     * Default: 'derivativeV2'
+     */
+    viewerApi?: 'streamingV2' | 'derivativeV2';
+    /**
+     * The theme to use for Autodesk Viewer.
+     * Default: 'light-theme'
+     */
+    theme?: 'light-theme' | 'dark-theme';
 };
 declare const AutodeskViewer: FC<Props>;
 
@@ -39,7 +54,7 @@ declare const getAggregateSelection: (viewer: Autodesk.Viewing.GuiViewer3D, guid
     guidsToDbids: {
         [key: string]: number;
     };
-}[], isolate?: boolean) => void;
+}[], isolate?: boolean, zoom?: boolean) => void;
 
 declare const _default: {
     AutodeskViewer: react.FC<{
@@ -49,13 +64,16 @@ declare const _default: {
         useSharedCoordinateSystem?: boolean;
         mappingCallback?: (arg: any) => void;
         clearCallback?: () => void;
+        viewerEnv?: "AutodeskProduction" | "AutodeskProduction2";
+        viewerApi?: "streamingV2" | "derivativeV2";
+        theme?: "light-theme" | "dark-theme";
     }>;
     getAggregateSelection: (viewer: Autodesk.Viewing.GuiViewer3D, guids: string[], guidsAndModels: {
         model: Autodesk.Viewing.Model;
         guidsToDbids: {
             [key: string]: number;
         };
-    }[], isolate?: boolean) => void;
+    }[], isolate?: boolean, zoom?: boolean) => void;
 };
 
 export { AutodeskViewer, _default as default, getAggregateSelection };
