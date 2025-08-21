@@ -2,13 +2,13 @@
 import { useCallback, useEffect, useRef } from "react";
 
 // src/heplers/viewerHelpers.ts
-var getGlobalOffset = async (doc, viewerInst, node) => {
+var getGlobalOffset = async (props) => {
   var _a;
-  const bubbleNode = node ? node : doc.getRoot().getDefaultGeometry();
-  await doc.downloadAecModelData();
+  const bubbleNode = props.node ? props.node : props.doc.getRoot().getDefaultGeometry();
+  await props.doc.downloadAecModelData();
   const aecModelData = bubbleNode.getAecModelData();
   const tf = aecModelData && aecModelData.refPointTransformation;
-  let globalOffset = (_a = viewerInst.model) == null ? void 0 : _a.getData().globalOffset;
+  let globalOffset = (_a = props.viewerInst.model) == null ? void 0 : _a.getData().globalOffset;
   const refPoint = tf ? new THREE.Vector3(tf[9], tf[10], tf[11]) : new THREE.Vector3(0, 0, 0);
   const MaxDistSqr = 4e6;
   const distSqr = globalOffset && THREE.Vector3.prototype.distanceToSquared.call(refPoint, globalOffset);
@@ -17,11 +17,11 @@ var getGlobalOffset = async (doc, viewerInst, node) => {
   }
   return globalOffset;
 };
-var getAggregateSelection = (viewer, guids, guidsAndModels, isolate, zoom) => {
+var getAggregateSelection = (props) => {
   const aggregatedDbIds = [];
   const allFragIds = [];
-  guidsAndModels.forEach(({ model, guidsToDbids }) => {
-    const dbIds = guids.map((guid) => guidsToDbids[guid]).filter((el) => el);
+  props.guidsAndModels.forEach(({ model, guidsToDbids }) => {
+    const dbIds = props.guids.map((guid) => guidsToDbids[guid]).filter((el) => el);
     if (!dbIds.length) return;
     aggregatedDbIds.push({ model, ids: dbIds });
     dbIds == null ? void 0 : dbIds.forEach((id) => {
@@ -33,43 +33,43 @@ var getAggregateSelection = (viewer, guids, guidsAndModels, isolate, zoom) => {
   if (!allFragIds.length) {
     return;
   }
-  viewer.setAggregateSelection();
-  isolate && viewer.setAggregateIsolation();
-  viewer.setAggregateSelection(aggregatedDbIds);
-  isolate && viewer.setAggregateIsolation(aggregatedDbIds);
-  zoom && viewer.fitToView(
+  props.viewer.setAggregateSelection();
+  props.isolate && props.viewer.setAggregateIsolation();
+  props.viewer.setAggregateSelection(aggregatedDbIds);
+  props.isolate && viewer.setAggregateIsolation(aggregatedDbIds);
+  props.zoom && props.viewer.fitToView(
     //@ts-ignore
     aggregatedDbIds.map((el) => {
       return { model: el.model, selection: el.ids };
     })
   );
 };
-var loadModelByUrn = (urn, viewer, loadModelViewableId, useSharedCoordinateSystem, keepCurrentModels, preserveView) => {
+var loadModelByUrn = (props) => {
   Autodesk.Viewing.Document.load(
-    "urn:" + urn,
+    "urn:" + props.urn,
     async (doc) => {
       const root = doc.getRoot();
-      const selectedView = root.findByGuid(loadModelViewableId || "");
+      const selectedView = root.findByGuid(props.loadModelViewableId || "");
       const defaultView = root.getNamedViews().find((v) => v.data.name === "Default View");
       const newConstructionView = root.getNamedViews().find((v) => v.data.name === "New Construction");
       const defaultModel = root.getDefaultGeometry();
       const viewable = selectedView || defaultView || newConstructionView || defaultModel;
-      const globalOffset = await getGlobalOffset(doc, viewer, viewable);
-      await viewer.loadDocumentNode(doc, viewable, {
-        preserveView,
-        applyRefPoint: !!useSharedCoordinateSystem,
-        keepCurrentModels: !!keepCurrentModels,
-        globalOffset: !!useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 }
+      const globalOffset = await getGlobalOffset({ doc, viewerInst: props.viewer, node: viewable });
+      await props.viewer.loadDocumentNode(doc, viewable, {
+        preserveView: props.preserveView,
+        applyRefPoint: !!props.useSharedCoordinateSystem,
+        keepCurrentModels: !!props.keepCurrentModels,
+        globalOffset: !!props.useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 }
       });
     },
     (code, message, errors) => console.error("LOAD MODEL ERROR", code, message, errors)
   );
 };
-var unloadModelByUrn = (urn, viewer, callbackToUpdatedMapping) => {
-  const allLoadedModels = viewer.getAllModels();
-  const modelToUnload = allLoadedModels.find((model) => model.getData().urn === urn);
-  viewer.unloadModel(modelToUnload);
-  callbackToUpdatedMapping && callbackToUpdatedMapping(urn);
+var unloadModelByUrn = (props) => {
+  const allLoadedModels = props.viewer.getAllModels();
+  const modelToUnload = allLoadedModels.find((model) => model.getData().urn === props.urn);
+  props.viewer.unloadModel(modelToUnload);
+  props.callbackToUpdatedMapping && props.callbackToUpdatedMapping(props.urn);
 };
 
 // src/components/AutodeskViewer/AutodeskViewer.tsx
@@ -89,10 +89,10 @@ var AutodeskViewer = ({
   const containerRef = useRef(null);
   const viewerRef = useRef(null);
   if (typeof window === "undefined") return null;
-  const getAllLeafComponents = (viewer, callback) => {
+  const getAllLeafComponents = (viewer2, callback) => {
     let cbCount = 0;
     const components = [];
-    let tree = viewer.model.getData().instanceTree;
+    let tree = viewer2.model.getData().instanceTree;
     function getLeafComponentsRec(parent) {
       cbCount++;
       if (tree.getChildCount(parent) != 0) {
@@ -108,7 +108,7 @@ var AutodeskViewer = ({
       }
       if (--cbCount == 0) callback(components);
     }
-    viewer.getObjectTree(function(objectTree) {
+    viewer2.getObjectTree(function(objectTree) {
       tree = objectTree;
       getLeafComponentsRec(tree.getRootId());
     });
@@ -174,7 +174,7 @@ var AutodeskViewer = ({
                 const newConstructionView = root.getNamedViews().find((v) => v.data.name === "New Construction");
                 const defaultModel = root.getDefaultGeometry();
                 const viewable = selectedView || defaultView || newConstructionView || defaultModel;
-                const globalOffset = await getGlobalOffset(doc, viewerRef.current, viewable);
+                const globalOffset = await getGlobalOffset({ doc, viewerInst: viewerRef.current, node: viewable });
                 await viewerRef.current.loadDocumentNode(doc, viewable, {
                   applyRefPoint: useSharedCoordinateSystem,
                   keepCurrentModels: !isFirst,

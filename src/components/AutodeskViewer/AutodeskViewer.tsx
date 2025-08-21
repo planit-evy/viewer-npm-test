@@ -172,7 +172,7 @@ export const AutodeskViewer: FC<Props> = ({
                 // Pick priority: selectedView > Default View > New Construction > Default Geometry
                 const viewable = selectedView || defaultView || newConstructionView || defaultModel;
 
-                const globalOffset = await getGlobalOffset(doc, viewerRef.current, viewable);
+                const globalOffset = await getGlobalOffset({ doc: doc, viewerInst: viewerRef.current, node: viewable });
 
                 await viewerRef.current.loadDocumentNode(doc, viewable, {
                   applyRefPoint: useSharedCoordinateSystem,

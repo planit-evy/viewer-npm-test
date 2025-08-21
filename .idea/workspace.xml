@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="build update fitToView aggregated selection key">
+    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="build load/unload foo">
+      <change afterPath="$PROJECT_DIR$/src/heplers/viewerHelper.types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/heplers/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/heplers/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,23 +96,7 @@
       <workItem from="1748778786088" duration="613000" />
       <workItem from="1755157760803" duration="3580000" />
       <workItem from="1755518782615" duration="759000" />
-      <workItem from="1755520309637" duration="34885000" />
-    </task>
-    <task id="LOCAL-00004" summary="viewer wrap">
-      <option name="closed" value="true" />
-      <created>1748706992807</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1748706992807</updated>
-    </task>
-    <task id="LOCAL-00005" summary="add gh-job">
-      <option name="closed" value="true" />
-      <created>1748707498428</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1748707498428</updated>
+      <workItem from="1755520309637" duration="36925000" />
     </task>
     <task id="LOCAL-00006" summary="add gh-job">
       <option name="closed" value="true" />
@@ -491,7 +474,23 @@
       <option name="project" value="LOCAL" />
       <updated>1755689694507</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="add load and unload functions and version prop for viewer">
+      <option name="closed" value="true" />
+      <created>1755780306559</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1755780306559</updated>
+    </task>
+    <task id="LOCAL-00054" summary="build load/unload foo">
+      <option name="closed" value="true" />
+      <created>1755780340958</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1755780340958</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -521,8 +520,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="build a new package" />
-    <MESSAGE value="fix re-export to named" />
     <MESSAGE value="re-export update" />
     <MESSAGE value="build update" />
     <MESSAGE value="update aggregate selection foo" />
@@ -546,6 +543,8 @@
     <MESSAGE value="new build" />
     <MESSAGE value="update fitToView aggregated selection key" />
     <MESSAGE value="build update fitToView aggregated selection key" />
-    <option name="LAST_COMMIT_MESSAGE" value="build update fitToView aggregated selection key" />
+    <MESSAGE value="add load and unload functions and version prop for viewer" />
+    <MESSAGE value="build load/unload foo" />
+    <option name="LAST_COMMIT_MESSAGE" value="build load/unload foo" />
   </component>
 </project>
