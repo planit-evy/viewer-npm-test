@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="update script load">
+    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="build update fitToView aggregated selection key">
       <change beforePath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/heplers/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/heplers/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,31 +97,7 @@
       <workItem from="1748778786088" duration="613000" />
       <workItem from="1755157760803" duration="3580000" />
       <workItem from="1755518782615" duration="759000" />
-      <workItem from="1755520309637" duration="27661000" />
-    </task>
-    <task id="LOCAL-00001" summary="add gitignore">
-      <option name="closed" value="true" />
-      <created>1748703049374</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1748703049374</updated>
-    </task>
-    <task id="LOCAL-00002" summary="add simple viewer wrapper to storybook">
-      <option name="closed" value="true" />
-      <created>1748706241631</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1748706241631</updated>
-    </task>
-    <task id="LOCAL-00003" summary="fix">
-      <option name="closed" value="true" />
-      <created>1748706679472</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1748706679472</updated>
+      <workItem from="1755520309637" duration="34885000" />
     </task>
     <task id="LOCAL-00004" summary="viewer wrap">
       <option name="closed" value="true" />
@@ -481,7 +459,39 @@
       <option name="project" value="LOCAL" />
       <updated>1755617247845</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="update selection, add observer and update viewer">
+      <option name="closed" value="true" />
+      <created>1755688172069</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1755688172069</updated>
+    </task>
+    <task id="LOCAL-00050" summary="new build">
+      <option name="closed" value="true" />
+      <created>1755688198713</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1755688198713</updated>
+    </task>
+    <task id="LOCAL-00051" summary="update fitToView aggregated selection key">
+      <option name="closed" value="true" />
+      <created>1755689677287</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1755689677288</updated>
+    </task>
+    <task id="LOCAL-00052" summary="build update fitToView aggregated selection key">
+      <option name="closed" value="true" />
+      <created>1755689694507</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1755689694507</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -511,10 +521,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="create tsup build" />
-    <MESSAGE value="upd package.json" />
-    <MESSAGE value="upd" />
-    <MESSAGE value="add functions to viewer" />
     <MESSAGE value="build a new package" />
     <MESSAGE value="fix re-export to named" />
     <MESSAGE value="re-export update" />
@@ -536,6 +542,10 @@
     <MESSAGE value="try ref viewer" />
     <MESSAGE value="try finish before init" />
     <MESSAGE value="update script load" />
-    <option name="LAST_COMMIT_MESSAGE" value="update script load" />
+    <MESSAGE value="update selection, add observer and update viewer" />
+    <MESSAGE value="new build" />
+    <MESSAGE value="update fitToView aggregated selection key" />
+    <MESSAGE value="build update fitToView aggregated selection key" />
+    <option name="LAST_COMMIT_MESSAGE" value="build update fitToView aggregated selection key" />
   </component>
 </project>

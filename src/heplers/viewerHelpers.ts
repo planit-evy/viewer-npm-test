@@ -22,10 +22,25 @@ export const getGlobalOffset = async (
 };
 
 export const getAggregateSelection = (
+  /**
+   * The viewer instance to use for setting the aggregate selection.
+   */
   viewer: Autodesk.Viewing.GuiViewer3D,
+  /**
+   * The GUIDs array to select or isolate.
+   */
   guids: string[],
+  /**
+   * Guids to DBIDs mapping for each loaded model.
+   */
   guidsAndModels: { model: Autodesk.Viewing.Model; guidsToDbids: { [key: string]: number } }[],
+  /**
+   * Whether to isolate the selected elements.
+   */
   isolate?: boolean,
+  /**
+   * Whether to zoom to the selected elements.
+   */
   zoom?: boolean,
 ) => {
   const aggregatedDbIds: { model: any; ids: number[] }[] = [];
@@ -62,4 +77,80 @@ export const getAggregateSelection = (
         return { model: el.model, selection: el.ids };
       }),
     );
+};
+
+export const loadModelByUrn = (
+  /**
+   * The URN of the model to load.
+   */
+  urn: string,
+  /**
+   * The viewer instance to use for loading the model.
+   */
+  viewer: Autodesk.Viewing.GuiViewer3D,
+  /**
+   * The viewable ID to load. If not provided, the default viewable will be loaded.
+   * If skipped view priority: selectedView > Default View > New Construction > Default Geometry
+   * Make sure Model has a proper view or provide that param
+   */
+  loadModelViewableId?: string,
+  /**
+   * Use a shared coordinate system for the model.
+   */
+  useSharedCoordinateSystem?: boolean,
+  /**
+   * Keep the current models in the viewer.
+   */
+  keepCurrentModels?: boolean,
+  /**
+   * Prevent a view from changing when loading a new model.
+   */
+  preserveView?: boolean,
+) => {
+  Autodesk.Viewing.Document.load(
+    'urn:' + urn,
+    async doc => {
+      const root = doc.getRoot();
+      const selectedView = root.findByGuid(loadModelViewableId || '');
+      const defaultView = root.getNamedViews().find((v: any) => v.data.name === 'Default View');
+      const newConstructionView = root.getNamedViews().find((v: any) => v.data.name === 'New Construction');
+      const defaultModel = root.getDefaultGeometry();
+
+      // Pick priority: selectedView > Default View > New Construction > Default Geometry
+      const viewable = selectedView || defaultView || newConstructionView || defaultModel;
+
+      const globalOffset = await getGlobalOffset(doc, viewer, viewable);
+
+      await viewer.loadDocumentNode(doc, viewable, {
+        preserveView: preserveView,
+        applyRefPoint: !!useSharedCoordinateSystem,
+        keepCurrentModels: !!keepCurrentModels,
+        globalOffset: !!useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 },
+      });
+    },
+    (code, message, errors) => console.error('LOAD MODEL ERROR', code, message, errors),
+  );
+};
+
+export const unloadModelByUrn = (
+  /**
+   * The URN of the model to unload.
+   */
+  urn: string,
+  /**
+   * The viewer instance to use for unloading the model.
+   */
+  viewer: Autodesk.Viewing.GuiViewer3D,
+  /**
+   * Callback function to update the mapping of GUIDs to DBIDs.
+   * @param urn - The URN of the model that was unloaded.
+   * Inside this function you can update the mapping of GUIDs to DBIDs.
+   * You have to filter the Mapping array and remove the unloaded model's GUIDs with its model.'
+   */
+  callbackToUpdatedMapping?: (urn: string) => void,
+) => {
+  const allLoadedModels = viewer.getAllModels();
+  const modelToUnload = allLoadedModels.find(model => model.getData().urn === urn);
+  viewer.unloadModel(modelToUnload);
+  callbackToUpdatedMapping && callbackToUpdatedMapping(urn);
 };

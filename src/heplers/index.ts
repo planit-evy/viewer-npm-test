@@ -1,1 +1,1 @@
-export { getAggregateSelection } from './viewerHelpers';
+export { getAggregateSelection, loadModelByUrn, unloadModelByUrn } from './viewerHelpers';

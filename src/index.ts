@@ -1,9 +1,11 @@
 import { AutodeskViewer } from './components';
-import { getAggregateSelection } from './heplers';
+import { getAggregateSelection, loadModelByUrn, unloadModelByUrn } from './heplers';
 
-export { AutodeskViewer, getAggregateSelection };
+export { AutodeskViewer, getAggregateSelection, loadModelByUrn, unloadModelByUrn };
 
 export default {
   AutodeskViewer,
   getAggregateSelection,
+  loadModelByUrn,
+  unloadModelByUrn,
 };

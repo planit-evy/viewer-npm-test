@@ -47,6 +47,12 @@ type Props = {
    * Default: 'light-theme'
    */
   theme?: 'light-theme' | 'dark-theme';
+  /**
+   * The version of Autodesk Viewer to use.
+   * Default: '7.111.0'
+   * The latest updates could be checked here: https://aps.autodesk.com/en/docs/viewer/v7/change_history/changelog_v7/
+   */
+  version?: string;
 };
 
 export const AutodeskViewer: FC<Props> = ({
@@ -59,6 +65,7 @@ export const AutodeskViewer: FC<Props> = ({
   viewerEnv = 'AutodeskProduction2',
   viewerApi = 'derivativeV2',
   theme = 'light-theme',
+  version = '7.111.0',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<any>(null);
@@ -129,7 +136,7 @@ export const AutodeskViewer: FC<Props> = ({
   useEffect(() => {
     if (!viewerRef.current) {
       async function loadViewer() {
-        await loadForgeViewer();
+        await loadForgeViewer(version);
 
         const options = {
           env: viewerEnv,
@@ -226,7 +233,7 @@ export const AutodeskViewer: FC<Props> = ({
 };
 
 // Load viewer from local files
-async function loadForgeViewer() {
+async function loadForgeViewer(version: string) {
   // If already loaded, just return
   if ((window as any).Autodesk?.Viewing) return;
 
@@ -240,11 +247,11 @@ async function loadForgeViewer() {
 
   const script = document.createElement('script');
   script.id = 'forge-viewer-script';
-  script.src = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/viewer3D.min.js';
+  script.src = `https://developer.api.autodesk.com/modelderivative/v2/viewers/${version}/viewer3D.min.js`;
   document.head.appendChild(script);
 
   const link = document.createElement('link');
-  link.href = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/style.min.css';
+  link.href = `https://developer.api.autodesk.com/modelderivative/v2/viewers/${version}/style.min.css`;
   link.rel = 'stylesheet';
   document.head.appendChild(link);
 
