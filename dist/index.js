@@ -21,7 +21,9 @@ var index_exports = {};
 __export(index_exports, {
   AutodeskViewer: () => AutodeskViewer,
   default: () => index_default,
-  getAggregateSelection: () => getAggregateSelection
+  getAggregateSelection: () => getAggregateSelection,
+  loadModelByUrn: () => loadModelByUrn,
+  unloadModelByUrn: () => unloadModelByUrn
 });
 module.exports = __toCommonJS(index_exports);
 
@@ -71,6 +73,33 @@ var getAggregateSelection = (viewer, guids, guidsAndModels, isolate, zoom) => {
     })
   );
 };
+var loadModelByUrn = (urn, viewer, loadModelViewableId, useSharedCoordinateSystem, keepCurrentModels, preserveView) => {
+  Autodesk.Viewing.Document.load(
+    "urn:" + urn,
+    async (doc) => {
+      const root = doc.getRoot();
+      const selectedView = root.findByGuid(loadModelViewableId || "");
+      const defaultView = root.getNamedViews().find((v) => v.data.name === "Default View");
+      const newConstructionView = root.getNamedViews().find((v) => v.data.name === "New Construction");
+      const defaultModel = root.getDefaultGeometry();
+      const viewable = selectedView || defaultView || newConstructionView || defaultModel;
+      const globalOffset = await getGlobalOffset(doc, viewer, viewable);
+      await viewer.loadDocumentNode(doc, viewable, {
+        preserveView,
+        applyRefPoint: !!useSharedCoordinateSystem,
+        keepCurrentModels: !!keepCurrentModels,
+        globalOffset: !!useSharedCoordinateSystem ? globalOffset : { x: 0, y: 0, z: 0 }
+      });
+    },
+    (code, message, errors) => console.error("LOAD MODEL ERROR", code, message, errors)
+  );
+};
+var unloadModelByUrn = (urn, viewer, callbackToUpdatedMapping) => {
+  const allLoadedModels = viewer.getAllModels();
+  const modelToUnload = allLoadedModels.find((model) => model.getData().urn === urn);
+  viewer.unloadModel(modelToUnload);
+  callbackToUpdatedMapping && callbackToUpdatedMapping(urn);
+};
 
 // src/components/AutodeskViewer/AutodeskViewer.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
@@ -83,7 +112,8 @@ var AutodeskViewer = ({
   clearCallback,
   viewerEnv = "AutodeskProduction2",
   viewerApi = "derivativeV2",
-  theme = "light-theme"
+  theme = "light-theme",
+  version = "7.111.0"
 }) => {
   const containerRef = (0, import_react.useRef)(null);
   const viewerRef = (0, import_react.useRef)(null);
@@ -145,7 +175,7 @@ var AutodeskViewer = ({
   (0, import_react.useEffect)(() => {
     if (!viewerRef.current) {
       async function loadViewer() {
-        await loadForgeViewer();
+        await loadForgeViewer(version);
         const options = {
           env: viewerEnv,
           api: viewerApi,
@@ -218,7 +248,7 @@ var AutodeskViewer = ({
   }, []);
   return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
 };
-async function loadForgeViewer() {
+async function loadForgeViewer(version) {
   var _a;
   if ((_a = window.Autodesk) == null ? void 0 : _a.Viewing) return;
   if (document.getElementById("forge-viewer-script")) {
@@ -229,10 +259,10 @@ async function loadForgeViewer() {
   }
   const script = document.createElement("script");
   script.id = "forge-viewer-script";
-  script.src = "https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/viewer3D.min.js";
+  script.src = `https://developer.api.autodesk.com/modelderivative/v2/viewers/${version}/viewer3D.min.js`;
   document.head.appendChild(script);
   const link = document.createElement("link");
-  link.href = "https://developer.api.autodesk.com/modelderivative/v2/viewers/7.109.0/style.min.css";
+  link.href = `https://developer.api.autodesk.com/modelderivative/v2/viewers/${version}/style.min.css`;
   link.rel = "stylesheet";
   document.head.appendChild(link);
   await new Promise((resolve) => {
@@ -243,10 +273,14 @@ async function loadForgeViewer() {
 // src/index.ts
 var index_default = {
   AutodeskViewer,
-  getAggregateSelection
+  getAggregateSelection,
+  loadModelByUrn,
+  unloadModelByUrn
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   AutodeskViewer,
-  getAggregateSelection
+  getAggregateSelection,
+  loadModelByUrn,
+  unloadModelByUrn
 });

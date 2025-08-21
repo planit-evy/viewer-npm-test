@@ -46,15 +46,84 @@ type Props = {
      * Default: 'light-theme'
      */
     theme?: 'light-theme' | 'dark-theme';
+    /**
+     * The version of Autodesk Viewer to use.
+     * Default: '7.111.0'
+     * The latest updates could be checked here: https://aps.autodesk.com/en/docs/viewer/v7/change_history/changelog_v7/
+     */
+    version?: string;
 };
 declare const AutodeskViewer: FC<Props>;
 
-declare const getAggregateSelection: (viewer: Autodesk.Viewing.GuiViewer3D, guids: string[], guidsAndModels: {
+declare const getAggregateSelection: (
+/**
+ * The viewer instance to use for setting the aggregate selection.
+ */
+viewer: Autodesk.Viewing.GuiViewer3D, 
+/**
+ * The GUIDs array to select or isolate.
+ */
+guids: string[], 
+/**
+ * Guids to DBIDs mapping for each loaded model.
+ */
+guidsAndModels: {
     model: Autodesk.Viewing.Model;
     guidsToDbids: {
         [key: string]: number;
     };
-}[], isolate?: boolean, zoom?: boolean) => void;
+}[], 
+/**
+ * Whether to isolate the selected elements.
+ */
+isolate?: boolean, 
+/**
+ * Whether to zoom to the selected elements.
+ */
+zoom?: boolean) => void;
+declare const loadModelByUrn: (
+/**
+ * The URN of the model to load.
+ */
+urn: string, 
+/**
+ * The viewer instance to use for loading the model.
+ */
+viewer: Autodesk.Viewing.GuiViewer3D, 
+/**
+ * The viewable ID to load. If not provided, the default viewable will be loaded.
+ * If skipped view priority: selectedView > Default View > New Construction > Default Geometry
+ * Make sure Model has a proper view or provide that param
+ */
+loadModelViewableId?: string, 
+/**
+ * Use a shared coordinate system for the model.
+ */
+useSharedCoordinateSystem?: boolean, 
+/**
+ * Keep the current models in the viewer.
+ */
+keepCurrentModels?: boolean, 
+/**
+ * Prevent a view from changing when loading a new model.
+ */
+preserveView?: boolean) => void;
+declare const unloadModelByUrn: (
+/**
+ * The URN of the model to unload.
+ */
+urn: string, 
+/**
+ * The viewer instance to use for unloading the model.
+ */
+viewer: Autodesk.Viewing.GuiViewer3D, 
+/**
+ * Callback function to update the mapping of GUIDs to DBIDs.
+ * @param urn - The URN of the model that was unloaded.
+ * Inside this function you can update the mapping of GUIDs to DBIDs.
+ * You have to filter the Mapping array and remove the unloaded model's GUIDs with its model.'
+ */
+callbackToUpdatedMapping?: (urn: string) => void) => void;
 
 declare const _default: {
     AutodeskViewer: react.FC<{
@@ -67,6 +136,7 @@ declare const _default: {
         viewerEnv?: "AutodeskProduction" | "AutodeskProduction2";
         viewerApi?: "streamingV2" | "derivativeV2";
         theme?: "light-theme" | "dark-theme";
+        version?: string;
     }>;
     getAggregateSelection: (viewer: Autodesk.Viewing.GuiViewer3D, guids: string[], guidsAndModels: {
         model: Autodesk.Viewing.Model;
@@ -74,6 +144,8 @@ declare const _default: {
             [key: string]: number;
         };
     }[], isolate?: boolean, zoom?: boolean) => void;
+    loadModelByUrn: (urn: string, viewer: Autodesk.Viewing.GuiViewer3D, loadModelViewableId?: string, useSharedCoordinateSystem?: boolean, keepCurrentModels?: boolean, preserveView?: boolean) => void;
+    unloadModelByUrn: (urn: string, viewer: Autodesk.Viewing.GuiViewer3D, callbackToUpdatedMapping?: (urn: string) => void) => void;
 };
 
-export { AutodeskViewer, _default as default, getAggregateSelection };
+export { AutodeskViewer, _default as default, getAggregateSelection, loadModelByUrn, unloadModelByUrn };
