@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="build load/unload foo">
-      <change afterPath="$PROJECT_DIR$/src/heplers/viewerHelper.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" afterDir="false" />
+    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="add model added and load states to recall resize observer creation">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,23 +94,8 @@
       <workItem from="1748778786088" duration="613000" />
       <workItem from="1755157760803" duration="3580000" />
       <workItem from="1755518782615" duration="759000" />
-      <workItem from="1755520309637" duration="36925000" />
-    </task>
-    <task id="LOCAL-00006" summary="add gh-job">
-      <option name="closed" value="true" />
-      <created>1748707720605</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1748707720605</updated>
-    </task>
-    <task id="LOCAL-00007" summary="add commit">
-      <option name="closed" value="true" />
-      <created>1748708107901</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1748708107901</updated>
+      <workItem from="1755520309637" duration="39777000" />
+      <workItem from="1755856782752" duration="108000" />
     </task>
     <task id="LOCAL-00008" summary="add git config on run">
       <option name="closed" value="true" />
@@ -490,7 +473,23 @@
       <option name="project" value="LOCAL" />
       <updated>1755780340958</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="change foo props to objects and add separate types + build">
+      <option name="closed" value="true" />
+      <created>1755785033016</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1755785033016</updated>
+    </task>
+    <task id="LOCAL-00056" summary="add model added and load states to recall resize observer creation">
+      <option name="closed" value="true" />
+      <created>1755849391368</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1755849391368</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -520,8 +519,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="re-export update" />
-    <MESSAGE value="build update" />
     <MESSAGE value="update aggregate selection foo" />
     <MESSAGE value="update build" />
     <MESSAGE value="update build and viewer version" />
@@ -545,6 +542,8 @@
     <MESSAGE value="build update fitToView aggregated selection key" />
     <MESSAGE value="add load and unload functions and version prop for viewer" />
     <MESSAGE value="build load/unload foo" />
-    <option name="LAST_COMMIT_MESSAGE" value="build load/unload foo" />
+    <MESSAGE value="change foo props to objects and add separate types + build" />
+    <MESSAGE value="add model added and load states to recall resize observer creation" />
+    <option name="LAST_COMMIT_MESSAGE" value="add model added and load states to recall resize observer creation" />
   </component>
 </project>
