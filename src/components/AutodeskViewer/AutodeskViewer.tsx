@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, FC } from 'react';
+import { useCallback, useEffect, useRef, FC, useState } from 'react';
 import { getGlobalOffset } from '../../heplers/viewerHelpers';
 import ViewerEventArgs = Autodesk.Viewing.ViewerEventArgs;
 
@@ -70,6 +70,9 @@ export const AutodeskViewer: FC<Props> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<any>(null);
 
+  const [modelAdded, setModelAdded] = useState<string>('');
+  const [modelLoaded, setModelLoaded] = useState(false);
+
   if (typeof window === 'undefined') return null;
 
   const getAllLeafComponents = (viewer: Autodesk.Viewing.Viewer3D, callback: (arg: number[]) => void) => {
@@ -99,10 +102,13 @@ export const AutodeskViewer: FC<Props> = ({
   };
 
   const onGeometryLoaded = useCallback((e: ViewerEventArgs) => {
+    setModelLoaded(true);
     console.log('Geometry loaded', e);
   }, []);
 
   const onModelAdded = useCallback((e: ViewerEventArgs) => {
+    //@ts-ignore
+    setModelAdded(`${e.type}-${e.model.id}`);
     console.log('Model added', e);
   }, []);
 
@@ -214,6 +220,7 @@ export const AutodeskViewer: FC<Props> = ({
   }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
 
   useEffect(() => {
+    if (!modelLoaded) return;
     if (!containerRef.current) return;
 
     const resizeObserver = new ResizeObserver(entries => {
@@ -227,7 +234,7 @@ export const AutodeskViewer: FC<Props> = ({
     return () => {
       resizeObserver.disconnect();
     };
-  }, []);
+  }, [modelLoaded, modelAdded]);
 
   return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />;
 };

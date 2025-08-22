@@ -1,5 +1,5 @@
 // src/components/AutodeskViewer/AutodeskViewer.tsx
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // src/heplers/viewerHelpers.ts
 var getGlobalOffset = async (props) => {
@@ -88,6 +88,8 @@ var AutodeskViewer = ({
 }) => {
   const containerRef = useRef(null);
   const viewerRef = useRef(null);
+  const [modelAdded, setModelAdded] = useState("");
+  const [modelLoaded, setModelLoaded] = useState(false);
   if (typeof window === "undefined") return null;
   const getAllLeafComponents = (viewer2, callback) => {
     let cbCount = 0;
@@ -114,9 +116,11 @@ var AutodeskViewer = ({
     });
   };
   const onGeometryLoaded = useCallback((e) => {
+    setModelLoaded(true);
     console.log("Geometry loaded", e);
   }, []);
   const onModelAdded = useCallback((e) => {
+    setModelAdded(`${e.type}-${e.model.id}`);
     console.log("Model added", e);
   }, []);
   const onInstTreeCreated = useCallback(async (e) => {
@@ -206,6 +210,7 @@ var AutodeskViewer = ({
     };
   }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
   useEffect(() => {
+    if (!modelLoaded) return;
     if (!containerRef.current) return;
     const resizeObserver = new ResizeObserver((entries) => {
       for (const _entry of entries) {
@@ -216,7 +221,7 @@ var AutodeskViewer = ({
     return () => {
       resizeObserver.disconnect();
     };
-  }, []);
+  }, [modelLoaded, modelAdded]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
 };
 async function loadForgeViewer(version) {

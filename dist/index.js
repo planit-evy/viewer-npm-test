@@ -117,6 +117,8 @@ var AutodeskViewer = ({
 }) => {
   const containerRef = (0, import_react.useRef)(null);
   const viewerRef = (0, import_react.useRef)(null);
+  const [modelAdded, setModelAdded] = (0, import_react.useState)("");
+  const [modelLoaded, setModelLoaded] = (0, import_react.useState)(false);
   if (typeof window === "undefined") return null;
   const getAllLeafComponents = (viewer2, callback) => {
     let cbCount = 0;
@@ -143,9 +145,11 @@ var AutodeskViewer = ({
     });
   };
   const onGeometryLoaded = (0, import_react.useCallback)((e) => {
+    setModelLoaded(true);
     console.log("Geometry loaded", e);
   }, []);
   const onModelAdded = (0, import_react.useCallback)((e) => {
+    setModelAdded(`${e.type}-${e.model.id}`);
     console.log("Model added", e);
   }, []);
   const onInstTreeCreated = (0, import_react.useCallback)(async (e) => {
@@ -235,6 +239,7 @@ var AutodeskViewer = ({
     };
   }, [urn, accessToken, onGeometryLoaded, onModelAdded, onInstTreeCreated, clearCallback]);
   (0, import_react.useEffect)(() => {
+    if (!modelLoaded) return;
     if (!containerRef.current) return;
     const resizeObserver = new ResizeObserver((entries) => {
       for (const _entry of entries) {
@@ -245,7 +250,7 @@ var AutodeskViewer = ({
     return () => {
       resizeObserver.disconnect();
     };
-  }, []);
+  }, [modelLoaded, modelAdded]);
   return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: containerRef, style: { width: "100%", height: "100%" } });
 };
 async function loadForgeViewer(version) {
