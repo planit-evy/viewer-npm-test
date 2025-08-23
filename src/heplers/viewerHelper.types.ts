@@ -76,11 +76,27 @@ export interface IUnloadModel {
 
 export interface IGetProps {
   /**
-   * The GUID of the element to get the properties for.
+   * Guids to DBIDs mapping for each loaded model.
    */
-  guid: string;
+  guidsAndModels: { model: Autodesk.Viewing.Model; guidsToDbids: { [key: string]: number } }[];
   /**
-   * The viewer instance to use for getting the properties.
+   * The GUIDs array to get props.
    */
-  viewer: Autodesk.Viewing.GuiViewer3D;
+  guids: string[];
+  /**
+   * The prop filter to use for getting props.
+   */
+  propFilter?: string[];
+  /**
+   * The category filter to use for getting props.
+   */
+  categoryFilter?: string[];
+  /**
+   * Ignore hidden nodes (elements).
+   */
+  ignoreHidden?: boolean;
+  /**
+   * Need external id in props or not.
+   */
+  needExternalId?: boolean;
 }

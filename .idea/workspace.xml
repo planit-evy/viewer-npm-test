@@ -4,18 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="update React version and build">
-      <change afterPath="$PROJECT_DIR$/dist/index.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dist/index.mjs.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsup.config.ts" afterDir="false" />
+    <list default="true" id="7b35da56-499c-4781-b414-0111deb12d02" name="Changes" comment="update package to use project react to avoid hook call errors, small fixes and storybook version update + build">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.d.mts" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.d.mts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AutodeskViewer/AutodeskViewer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.mjs.map" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.mjs.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/heplers/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/heplers/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/heplers/viewerHelper.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/heplers/viewerHelper.types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/heplers/viewerHelpers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,15 +110,7 @@
       <workItem from="1755520309637" duration="39777000" />
       <workItem from="1755856782752" duration="108000" />
       <workItem from="1755856961104" duration="723000" />
-      <workItem from="1755937729703" duration="3457000" />
-    </task>
-    <task id="LOCAL-00009" summary="add git config on run">
-      <option name="closed" value="true" />
-      <created>1748708749581</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1748708749581</updated>
+      <workItem from="1755937729703" duration="6414000" />
     </task>
     <task id="LOCAL-00010" summary="remove git config on run">
       <option name="closed" value="true" />
@@ -504,7 +496,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755857311484</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="update package to use project react to avoid hook call errors, small fixes and storybook version update + build">
+      <option name="closed" value="true" />
+      <created>1755943157833</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1755943157833</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -534,7 +534,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update build" />
     <MESSAGE value="update build and viewer version" />
     <MESSAGE value="update build and foo" />
     <MESSAGE value="update build and foo and viewer" />
@@ -559,6 +558,7 @@
     <MESSAGE value="change foo props to objects and add separate types + build" />
     <MESSAGE value="add model added and load states to recall resize observer creation" />
     <MESSAGE value="update React version and build" />
-    <option name="LAST_COMMIT_MESSAGE" value="update React version and build" />
+    <MESSAGE value="update package to use project react to avoid hook call errors, small fixes and storybook version update + build" />
+    <option name="LAST_COMMIT_MESSAGE" value="update package to use project react to avoid hook call errors, small fixes and storybook version update + build" />
   </component>
 </project>

@@ -73,6 +73,37 @@ interface IUnloadModel {
      */
     callbackToUpdatedMapping?: (urn: string) => void;
 }
+interface IGetProps {
+    /**
+     * Guids to DBIDs mapping for each loaded model.
+     */
+    guidsAndModels: {
+        model: Autodesk.Viewing.Model;
+        guidsToDbids: {
+            [key: string]: number;
+        };
+    }[];
+    /**
+     * The GUIDs array to get props.
+     */
+    guids: string[];
+    /**
+     * The prop filter to use for getting props.
+     */
+    propFilter?: string[];
+    /**
+     * The category filter to use for getting props.
+     */
+    categoryFilter?: string[];
+    /**
+     * Ignore hidden nodes (elements).
+     */
+    ignoreHidden?: boolean;
+    /**
+     * Need external id in props or not.
+     */
+    needExternalId?: boolean;
+}
 
 type Props = {
     /**
@@ -131,6 +162,7 @@ declare const AutodeskViewer: FC<Props>;
 declare const getAggregateSelection: (props: ISelection) => void;
 declare const loadModelByUrn: (props: ILoadModel) => void;
 declare const unloadModelByUrn: (props: IUnloadModel) => void;
+declare const getObjectPropsByGuid: (props: IGetProps) => Promise<any>;
 
 declare const _default: {
     AutodeskViewer: react.FC<{
@@ -148,6 +180,7 @@ declare const _default: {
     getAggregateSelection: (props: ISelection) => void;
     loadModelByUrn: (props: ILoadModel) => void;
     unloadModelByUrn: (props: IUnloadModel) => void;
+    getObjectPropsByGuid: (props: IGetProps) => Promise<any>;
 };
 
-export { AutodeskViewer, _default as default, getAggregateSelection, loadModelByUrn, unloadModelByUrn };
+export { AutodeskViewer, _default as default, getAggregateSelection, getObjectPropsByGuid, loadModelByUrn, unloadModelByUrn };

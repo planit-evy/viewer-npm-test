@@ -22,6 +22,7 @@ __export(index_exports, {
   AutodeskViewer: () => AutodeskViewer,
   default: () => index_default,
   getAggregateSelection: () => getAggregateSelection,
+  getObjectPropsByGuid: () => getObjectPropsByGuid,
   loadModelByUrn: () => loadModelByUrn,
   unloadModelByUrn: () => unloadModelByUrn
 });
@@ -99,6 +100,33 @@ var unloadModelByUrn = (props) => {
   const modelToUnload = allLoadedModels.find((model) => model.getData().urn === props.urn);
   props.viewer.unloadModel(modelToUnload);
   props.callbackToUpdatedMapping && props.callbackToUpdatedMapping(props.urn);
+};
+var getObjectPropsByGuid = async (props) => {
+  const mappingData = props.guidsAndModels.map((el) => {
+    const { model, guidsToDbids } = el;
+    const dbIds = props.guids.map((guid) => guidsToDbids[guid]);
+    return new Promise((resolve, reject) => {
+      model.getBulkProperties2(
+        dbIds,
+        {
+          propFilter: props.propFilter,
+          categoryFilter: props.categoryFilter,
+          ignoreHidden: props.ignoreHidden,
+          needExternalId: props.needExternalId
+        },
+        (properties) => {
+          console.log("Found leaf dbids processed");
+          resolve(properties);
+        },
+        (err) => {
+          console.log("Mapping GUID to DBID error", err);
+          reject(err);
+        }
+      );
+    });
+  });
+  const result = await Promise.all(mappingData);
+  return result.flat();
 };
 
 // src/components/AutodeskViewer/AutodeskViewer.tsx
@@ -277,12 +305,14 @@ var index_default = {
   AutodeskViewer,
   getAggregateSelection,
   loadModelByUrn,
-  unloadModelByUrn
+  unloadModelByUrn,
+  getObjectPropsByGuid
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   AutodeskViewer,
   getAggregateSelection,
+  getObjectPropsByGuid,
   loadModelByUrn,
   unloadModelByUrn
 });

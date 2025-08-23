@@ -71,6 +71,33 @@ var unloadModelByUrn = (props) => {
   props.viewer.unloadModel(modelToUnload);
   props.callbackToUpdatedMapping && props.callbackToUpdatedMapping(props.urn);
 };
+var getObjectPropsByGuid = async (props) => {
+  const mappingData = props.guidsAndModels.map((el) => {
+    const { model, guidsToDbids } = el;
+    const dbIds = props.guids.map((guid) => guidsToDbids[guid]);
+    return new Promise((resolve, reject) => {
+      model.getBulkProperties2(
+        dbIds,
+        {
+          propFilter: props.propFilter,
+          categoryFilter: props.categoryFilter,
+          ignoreHidden: props.ignoreHidden,
+          needExternalId: props.needExternalId
+        },
+        (properties) => {
+          console.log("Found leaf dbids processed");
+          resolve(properties);
+        },
+        (err) => {
+          console.log("Mapping GUID to DBID error", err);
+          reject(err);
+        }
+      );
+    });
+  });
+  const result = await Promise.all(mappingData);
+  return result.flat();
+};
 
 // src/components/AutodeskViewer/AutodeskViewer.tsx
 import { jsx } from "react/jsx-runtime";
@@ -248,12 +275,14 @@ var index_default = {
   AutodeskViewer,
   getAggregateSelection,
   loadModelByUrn,
-  unloadModelByUrn
+  unloadModelByUrn,
+  getObjectPropsByGuid
 };
 export {
   AutodeskViewer,
   index_default as default,
   getAggregateSelection,
+  getObjectPropsByGuid,
   loadModelByUrn,
   unloadModelByUrn
 };
