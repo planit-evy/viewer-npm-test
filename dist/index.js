@@ -146,11 +146,9 @@ var AutodeskViewer = ({
   };
   const onGeometryLoaded = (0, import_react.useCallback)((e) => {
     setModelLoaded(true);
-    console.log("Geometry loaded", e);
   }, []);
   const onModelAdded = (0, import_react.useCallback)((e) => {
     setModelAdded(`${e.type}-${e.model.id}`);
-    console.log("Model added", e);
   }, []);
   const onInstTreeCreated = (0, import_react.useCallback)(async (e) => {
     getAllLeafComponents(e.target, function(dbIds) {
@@ -167,7 +165,6 @@ var AutodeskViewer = ({
           });
           console.log("Found leaf dbids processed");
           const modelMapping = { model: e.model, guidsToDbids: dict };
-          console.log({ model: e.model, guidsToDbids: dict });
           mappingCallback && mappingCallback(modelMapping);
         },
         (err) => {
@@ -289,3 +286,4 @@ var index_default = {
   loadModelByUrn,
   unloadModelByUrn
 });
+//# sourceMappingURL=index.js.map

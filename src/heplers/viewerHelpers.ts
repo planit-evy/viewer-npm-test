@@ -88,3 +88,28 @@ export const unloadModelByUrn = (props: IUnloadModel) => {
   props.viewer.unloadModel(modelToUnload);
   props.callbackToUpdatedMapping && props.callbackToUpdatedMapping(props.urn);
 };
+
+export const getObjectPropsByGuid = (props: { guid: string; viewer: any }) => {
+  //TODO implement
+  // e.target.model.getBulkProperties2
+  // return new Promise((resolve, reject) => {
+  //   model.getBulkProperties2(
+  //     dbIds,
+  //     { propFilter: ['externalId'], categoryFilter: undefined, ignoreHidden: true, needExternalId: true },
+  //     (props) => {
+  //       const dict: { [key: string]: number } = {};
+  //       props.forEach(el => {
+  //         if (el.externalId) {
+  //           dict[el.externalId] = el.dbId;
+  //         }
+  //       });
+  //       console.log('Found leaf dbids processed');
+  //       resolve({ model, guidsToDbids: dict });
+  //     },
+  //     (err) => {
+  //       console.log('Mapping GUID to DBID error', err);
+  //       reject(err);
+  //     }
+  //   );
+  // });
+};

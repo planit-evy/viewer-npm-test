@@ -103,13 +103,13 @@ export const AutodeskViewer: FC<Props> = ({
 
   const onGeometryLoaded = useCallback((e: ViewerEventArgs) => {
     setModelLoaded(true);
-    console.log('Geometry loaded', e);
+    // console.log('Geometry loaded', e);
   }, []);
 
   const onModelAdded = useCallback((e: ViewerEventArgs) => {
     //@ts-ignore
     setModelAdded(`${e.type}-${e.model.id}`);
-    console.log('Model added', e);
+    // console.log('Model added', e);
   }, []);
 
   const onInstTreeCreated = useCallback(async (e: ViewerEventArgs) => {
@@ -128,7 +128,6 @@ export const AutodeskViewer: FC<Props> = ({
           });
           console.log('Found leaf dbids processed');
           const modelMapping = { model: e.model, guidsToDbids: dict };
-          console.log({ model: e.model, guidsToDbids: dict });
           //in mapping callback needs to handle save previous state due to model load queue
           mappingCallback && mappingCallback(modelMapping);
         },

@@ -73,3 +73,14 @@ export interface IUnloadModel {
    */
   callbackToUpdatedMapping?: (urn: string) => void;
 }
+
+export interface IGetProps {
+  /**
+   * The GUID of the element to get the properties for.
+   */
+  guid: string;
+  /**
+   * The viewer instance to use for getting the properties.
+   */
+  viewer: Autodesk.Viewing.GuiViewer3D;
+}
